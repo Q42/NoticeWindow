@@ -13,14 +13,14 @@ import NoticeWindow
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   lazy var noticeWindow: NoticeWindow<Notice> = {
-    let frame = UIScreen.mainScreen().bounds
-
-    return NoticeWindow<Notice>(frame: frame, viewForNotice: { notice in
+    let noticeWindow = NoticeWindow<Notice>(frame: UIScreen.mainScreen().bounds)
+    noticeWindow.viewForNotice = { notice in
       let view = UINib.init(nibName: "NoticeView", bundle: NSBundle.mainBundle())
         .instantiateWithOwner(nil, options: nil)[0] as! NoticeView
       view.notice = notice
       return view
-    })
+    }
+    return noticeWindow
   }()
 
   var window: UIWindow? {

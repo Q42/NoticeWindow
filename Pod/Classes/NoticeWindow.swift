@@ -11,7 +11,8 @@ import UIKit
 
 public class NoticeWindow<T> : UIWindow {
 
-  private let viewForNotice: T -> UIView
+  /// set this after initializing the NoticeWindow
+  public var viewForNotice: (T -> UIView)?
 
   /// to keep track of the actual notice, used for dismissing
   private var currentNoticeId: String?
@@ -27,11 +28,8 @@ public class NoticeWindow<T> : UIWindow {
 
   /**
    Inititalizer
-   - parameter viewForNotice: function which returns a view based on the given notice
    */
-  public init(frame: CGRect, viewForNotice: T -> UIView) {
-    self.viewForNotice = viewForNotice
-
+  public override init(frame: CGRect) {
     super.init(frame: frame)
   }
 
@@ -55,7 +53,10 @@ public class NoticeWindow<T> : UIWindow {
 
   private func showNotice(notice: T, duration: NSTimeInterval = 5, animated: Bool = true, completion: (() -> Void)? = nil) {
 
-    let noticeView = viewForNotice(notice)
+    guard let noticeView = viewForNotice?(notice) else {
+      print("Error: NoticeWindow.viewForNotice should been set.")
+      return
+    }
 
     currentNoticeView = noticeView
     currentNotice = notice
