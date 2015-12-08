@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '3E484018A7006A9469662B00'
+               BlueprintIdentifier = '688C6CC02539792B18EA3998'
                BlueprintName = 'NoticeWindow'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'NoticeWindow.framework'>
