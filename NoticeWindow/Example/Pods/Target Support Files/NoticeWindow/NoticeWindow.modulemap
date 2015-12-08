@@ -1,0 +1,6 @@
+framework module NoticeWindow {
+  umbrella header "NoticeWindow-umbrella.h"
+
+  export *
+  module * { export * }
+}
