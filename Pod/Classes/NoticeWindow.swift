@@ -36,8 +36,7 @@ public class NoticeWindow : UIWindow {
 
   private func showView(view: UIView, duration: NSTimeInterval = 5, animated: Bool = true, completion: (() -> Void)? = nil) {
 
-    let tagGestureRecognizer = UITapGestureRecognizer(target: self, action: "noticeTouched")
-    addGestureRecognizer(tagGestureRecognizer)
+    view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "noticeTouched"))
 
     currentNoticeView = view
     addSubview(view)
