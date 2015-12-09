@@ -11,7 +11,6 @@ import UIKit
 
 struct Notice {
   let title: String
-  let message: String
   let style: Style
 
   enum Style {
@@ -24,8 +23,8 @@ extension Notice {
 
   func present() {
 
-    let view = UINib.init(nibName: "NoticeView", bundle: NSBundle.mainBundle())
-      .instantiateWithOwner(nil, options: nil)[0] as! NoticeView
+    let view = UINib.init(nibName: "CustomNoticeView", bundle: NSBundle.mainBundle())
+      .instantiateWithOwner(nil, options: nil)[0] as! CustomNoticeView
     view.notice = self
 
     (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.presentView(view)

@@ -18,19 +18,35 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y9c-75-CeS">
-                                <rect key="frame" x="248.5" y="40" width="104" height="30"/>
+                                <rect key="frame" x="222" y="40" width="156" height="30"/>
                                 <animations/>
-                                <state key="normal" title="Success notice"/>
+                                <state key="normal" title="Default success notice"/>
                                 <connections>
-                                    <action selector="presentSuccessNotice:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="zeZ-nY-g0w"/>
+                                    <action selector="presentDefaultSuccessNotice:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="l6K-xx-Zn6"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7k3-KP-pU5">
-                                <rect key="frame" x="259.5" y="110" width="81" height="30"/>
+                                <rect key="frame" x="233" y="110" width="133" height="30"/>
                                 <animations/>
-                                <state key="normal" title="Error notice"/>
+                                <state key="normal" title="Default error notice"/>
                                 <connections>
-                                    <action selector="presentErrorNotice:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="TqR-bs-Og6"/>
+                                    <action selector="presentDefaultErrorNotice:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="z4O-Nk-Th8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0zY-FR-AT4">
+                                <rect key="frame" x="231" y="250" width="137" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Custom error notice"/>
+                                <connections>
+                                    <action selector="presentCustomErrorNotice:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="fEm-dB-SbC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6q1-PF-Km7">
+                                <rect key="frame" x="220" y="180" width="160" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Custom success notice"/>
+                                <connections>
+                                    <action selector="presentCustomSuccessNotice:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="vcf-Sf-wGX"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -39,8 +55,12 @@
                         <constraints>
                             <constraint firstItem="y9c-75-CeS" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="0c1-P1-aOh"/>
                             <constraint firstItem="7k3-KP-pU5" firstAttribute="top" secondItem="y9c-75-CeS" secondAttribute="bottom" constant="40" id="3uo-ho-nHh"/>
+                            <constraint firstItem="6q1-PF-Km7" firstAttribute="top" secondItem="7k3-KP-pU5" secondAttribute="bottom" constant="40" id="BYM-Jg-gKg"/>
+                            <constraint firstItem="0zY-FR-AT4" firstAttribute="centerX" secondItem="6q1-PF-Km7" secondAttribute="centerX" id="Dja-2l-DXn"/>
                             <constraint firstItem="y9c-75-CeS" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="20" id="DnG-SS-pi4"/>
                             <constraint firstItem="7k3-KP-pU5" firstAttribute="centerX" secondItem="y9c-75-CeS" secondAttribute="centerX" id="Fv3-hS-df1"/>
+                            <constraint firstItem="0zY-FR-AT4" firstAttribute="top" secondItem="6q1-PF-Km7" secondAttribute="bottom" constant="40" id="L8f-62-dbq"/>
+                            <constraint firstItem="6q1-PF-Km7" firstAttribute="centerX" secondItem="7k3-KP-pU5" secondAttribute="centerX" id="f7a-mg-FNg"/>
                         </constraints>
                     </view>
                 </viewController>

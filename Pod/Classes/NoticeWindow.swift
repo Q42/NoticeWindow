@@ -121,3 +121,35 @@ public class NoticeWindow : UIWindow {
     }
   }
 }
+
+extension NoticeWindow {
+
+  public enum Style {
+    case Success
+    case Error
+  }
+
+  public func presentNotice(title: String, message: String, style: Style, duration: NSTimeInterval = 5, animated: Bool = true, completion: (() -> ())? = nil) {
+
+    let podBundle = NSBundle(forClass: self.classForCoder)
+    guard let bundleURL = podBundle.URLForResource("NoticeWindow", withExtension: "bundle"), bundle = NSBundle(URL: bundleURL) else {
+      return print("NoticeWindow error: Could not load the NoticeWindow bundle.")
+    }
+
+    guard let view = UINib(nibName: "NoticeView", bundle: bundle).instantiateWithOwner(nil, options: nil)[0] as? NoticeView else {
+      return print("NoticeWindow error: Could not instantiate the NoticeView nib.")
+    }
+
+    view.titleLabel.text = title
+    view.messageLabel.text = message
+
+    switch style {
+    case .Success:
+      view.backgroundColor = UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00)
+    case .Error:
+      view.backgroundColor = UIColor(red: 0.867, green: 0.125, blue: 0.125, alpha: 1.00)
+    }
+
+    presentView(view, duration: duration, animated: animated, completion: completion)
+  }
+}

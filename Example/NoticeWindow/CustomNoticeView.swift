@@ -9,9 +9,8 @@
 import Foundation
 import UIKit
 
-class NoticeView: UIView {
+class CustomNoticeView: UIView {
   @IBOutlet weak var titleLabel: UILabel!
-  @IBOutlet weak var messageLabel: UILabel!
 
   var notice: Notice? {
     didSet {
@@ -26,12 +25,11 @@ class NoticeView: UIView {
 
     switch notice.style {
     case .Success:
-      backgroundColor = UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00)
+      backgroundColor = UIColor(red: 0.384, green: 0.483, blue: 1.000, alpha: 1.00)
     case .Error:
-      backgroundColor = UIColor(red: 0.867, green: 0.125, blue: 0.125, alpha: 1.00)
+      backgroundColor = UIColor(red: 1.0, green: 0.641, blue: 0.218, alpha: 1.00)
     }
 
     titleLabel.text = notice.title
-    messageLabel.text = notice.message
   }
 }

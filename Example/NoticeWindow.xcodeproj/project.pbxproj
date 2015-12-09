@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2B987D231C17162A0046B324 /* Notice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B987D221C17162A0046B324 /* Notice.swift */; };
-		2B987D251C17185E0046B324 /* NoticeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B987D241C17185E0046B324 /* NoticeView.xib */; };
-		2B987D271C17187A0046B324 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B987D261C17187A0046B324 /* NoticeView.swift */; };
+		2B987D251C17185E0046B324 /* CustomNoticeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B987D241C17185E0046B324 /* CustomNoticeView.xib */; };
+		2B987D271C17187A0046B324 /* CustomNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B987D261C17187A0046B324 /* CustomNoticeView.swift */; };
 		2E657ECC77E3341E98CEA2FA /* Pods_NoticeWindow_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C83A290AB3347F1EE8C93D /* Pods_NoticeWindow_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -36,8 +36,8 @@
 		0C8974505895D59A9059652A /* NoticeWindow.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = NoticeWindow.podspec; path = ../NoticeWindow.podspec; sourceTree = "<group>"; };
 		206A149F3D9743AA453638E6 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		2B987D221C17162A0046B324 /* Notice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notice.swift; sourceTree = "<group>"; };
-		2B987D241C17185E0046B324 /* NoticeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoticeView.xib; sourceTree = "<group>"; };
-		2B987D261C17187A0046B324 /* NoticeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
+		2B987D241C17185E0046B324 /* CustomNoticeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomNoticeView.xib; sourceTree = "<group>"; };
+		2B987D261C17187A0046B324 /* CustomNoticeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNoticeView.swift; sourceTree = "<group>"; };
 		31C20A4292E8006A1457EDFC /* Pods_NoticeWindow_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NoticeWindow_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* NoticeWindow_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoticeWindow_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -79,8 +79,8 @@
 			isa = PBXGroup;
 			children = (
 				2B987D221C17162A0046B324 /* Notice.swift */,
-				2B987D261C17187A0046B324 /* NoticeView.swift */,
-				2B987D241C17185E0046B324 /* NoticeView.xib */,
+				2B987D261C17187A0046B324 /* CustomNoticeView.swift */,
+				2B987D241C17185E0046B324 /* CustomNoticeView.xib */,
 			);
 			name = Notice;
 			sourceTree = "<group>";
@@ -263,7 +263,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B987D251C17185E0046B324 /* NoticeView.xib in Resources */,
+				2B987D251C17185E0046B324 /* CustomNoticeView.xib in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
@@ -377,7 +377,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B987D271C17187A0046B324 /* NoticeView.swift in Sources */,
+				2B987D271C17187A0046B324 /* CustomNoticeView.swift in Sources */,
 				2B987D231C17162A0046B324 /* Notice.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,

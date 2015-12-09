@@ -1,6 +1,6 @@
 {
   "name": "NoticeWindow",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "summary": "Present your custom notices in the application window.",
   "description": "Present your custom notices in the application window so the notice isn't lost after leaving the screen.",
   "homepage": "https://github.com/Q42/NoticeWindow",
@@ -10,11 +10,16 @@
   },
   "source": {
     "git": "https://github.com/Q42/NoticeWindow.git",
-    "tag": "0.1.0"
+    "tag": "0.1.1"
   },
   "platforms": {
     "ios": "8.0"
   },
   "requires_arc": true,
-  "source_files": "Pod/Classes/*"
+  "source_files": "Pod/Classes/*",
+  "resource_bundles": {
+    "NoticeWindow": [
+      "Pod/Resources/*.xib"
+    ]
+  }
 }
