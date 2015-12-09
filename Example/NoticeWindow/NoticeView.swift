@@ -19,23 +19,6 @@ class NoticeView: UIView {
     }
   }
 
-  // MARK: Object Lifecycle
-
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    initialize()
-  }
-
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    initialize()
-  }
-
-  private func initialize() {
-    let tagGestureRecognizer = UITapGestureRecognizer(target: self, action: "noticeTouched")
-    addGestureRecognizer(tagGestureRecognizer)
-  }
-
   // MARK: View Lifecycle
 
   private func noticeDidChange() {
@@ -51,10 +34,4 @@ class NoticeView: UIView {
     titleLabel.text = notice.title
     messageLabel.text = notice.message
   }
-
-  // MARK: Actions
-  func noticeTouched() {
-    notice?.dismiss()
-  }
-  
 }

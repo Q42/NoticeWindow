@@ -12,15 +12,8 @@ import NoticeWindow
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-  lazy var noticeWindow: NoticeWindow<Notice> = {
-    let noticeWindow = NoticeWindow<Notice>(frame: UIScreen.mainScreen().bounds)
-    noticeWindow.viewForNotice = { notice in
-      let view = UINib.init(nibName: "NoticeView", bundle: NSBundle.mainBundle())
-        .instantiateWithOwner(nil, options: nil)[0] as! NoticeView
-      view.notice = notice
-      return view
-    }
-    return noticeWindow
+  lazy var noticeWindow: NoticeWindow = {
+    return NoticeWindow(frame: UIScreen.mainScreen().bounds)
   }()
 
   var window: UIWindow? {
@@ -31,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       self.window = newValue
     }
   }
-
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
       // Override point for customization after application launch.

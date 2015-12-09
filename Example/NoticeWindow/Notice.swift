@@ -23,10 +23,15 @@ struct Notice {
 extension Notice {
 
   func present() {
-    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.presentNotice(self)
+
+    let view = UINib.init(nibName: "NoticeView", bundle: NSBundle.mainBundle())
+      .instantiateWithOwner(nil, options: nil)[0] as! NoticeView
+    view.notice = self
+
+    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.presentView(view)
   }
 
   func dismiss() {
-    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.dismissNotice()
+    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.dismissCurrentNotice()
   }
 }
