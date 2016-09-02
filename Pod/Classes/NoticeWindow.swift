@@ -85,10 +85,16 @@ public class NoticeWindow : UIWindow {
     guard let noticeView = self.currentNoticeView where noticeView.layer.animationForKey("slide out") == nil else {
       return
     }
+    dismissNotice(noticeView, animated: animated, completion: completion)
+  }
+
+  public func dismissNotice(noticeView: UIView, animated: Bool = true, completion: (() -> ())? = nil) {
 
     let complete: () -> () = { [weak self] in
-      self?.currentNoticeView?.removeFromSuperview()
-      self?.currentNoticeView = nil
+      if let current = self?.currentNoticeView where current == noticeView {
+        current.removeFromSuperview()
+        self?.currentNoticeView = nil
+      }
       completion?()
     }
 
