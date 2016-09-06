@@ -17,17 +17,17 @@ public enum NoticePosition {
 public class NoticeWindow : UIWindow {
 
   /// pending notice
-  private var pendingNotice: (UIView, NoticePosition)?
+  private var pendingNotice: (UIView, NoticePosition, () -> Void)?
 
   /// current notice view that is presented
-  private var currentNotice: (view: UIView, position: NoticePosition)?
+  private var currentNotice: (view: UIView, position: NoticePosition, completion: () -> Void)?
 
   override public var frame: CGRect {
     didSet {
 
       guard
-        let (currentView, _) = self.currentNotice,
-        let noticeView = currentView as? NoticeView
+        let current = self.currentNotice,
+        let noticeView = current.view as? NoticeView
         where noticeView.style.adjustTopInsetForStatusBar
       else { return }
 
@@ -44,27 +44,43 @@ public class NoticeWindow : UIWindow {
   public func presentView(view: UIView, duration: NSTimeInterval? = 5, position: NoticePosition = .Top, animated: Bool = true, completion: (() -> Void)? = nil) {
 
     if currentNotice != nil {
-      pendingNotice = (view, position)
+      pendingNotice = (view, position, { completion?() })
 
-      dismissCurrentNotice(animated) {[weak self] in
-        if let (pendingView, pendingPosition) = self?.pendingNotice {
-          self?.showView(pendingView, duration: duration, position: pendingPosition, animated: animated, dismissOnTouch: true, completion: completion)
+      dismissCurrentNotice(animated) { [weak self] in
+        if let (pendingView, pendingPosition, pendingCompletion) = self?.pendingNotice {
+          self?.showView(
+            view: pendingView,
+            duration: duration,
+            position: pendingPosition,
+            animated: animated,
+            dismissOnTouch: true,
+            presented: { },
+            completion: pendingCompletion)
           self?.pendingNotice = nil
         }
       }
 
-    } else {
-      showView(view, duration: duration, position: position, animated: animated, dismissOnTouch: true, completion: completion)
+    }
+    else {
+
+      showView(
+        view: view,
+        duration: duration,
+        position: position,
+        animated: animated,
+        dismissOnTouch: true,
+        presented: { },
+        completion: { completion?() })
     }
   }
 
-  private func showView(view: UIView, duration: NSTimeInterval?, position: NoticePosition, animated: Bool, dismissOnTouch: Bool, completion: (() -> Void)? = nil) {
+  private func showView(view view: UIView, duration: NSTimeInterval?, position: NoticePosition, animated: Bool, dismissOnTouch: Bool, presented: () -> Void, completion: () -> Void) {
 
     if dismissOnTouch {
-      view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "noticeTouched"))
+      view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noticeTouched)))
     }
 
-    currentNotice = (view, position)
+    currentNotice = (view, position, completion)
     addSubview(view)
 
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -97,7 +113,7 @@ public class NoticeWindow : UIWindow {
 
     if animated {
       CATransaction.begin()
-      CATransaction.setCompletionBlock({ completion?() })
+      CATransaction.setCompletionBlock(presented)
 
       let animation = CABasicAnimation(keyPath: "transform.translation.y")
       animation.duration = 0.25
@@ -109,26 +125,28 @@ public class NoticeWindow : UIWindow {
       view.layer.addAnimation(animation, forKey: "slide in")
       CATransaction.commit()
     } else {
-      completion?()
+      presented()
     }
   }
 
-  public func dismissCurrentNotice(animated: Bool = true, completion: (() -> ())? = nil) {
-    if let (noticeView, position) = self.currentNotice
+  public func dismissCurrentNotice(animated: Bool = true, dismissed: (() -> Void)? = nil) {
+    if let (noticeView, position, _) = self.currentNotice
       where noticeView.layer.animationForKey("slide out") == nil
     {
-      dismissNotice(noticeView, position: position, animated: animated, completion: completion)
+      dismissNotice(noticeView, position: position, animated: animated, dismissed: { dismissed?() })
     }
   }
 
-  public func dismissNotice(noticeView: UIView, position: NoticePosition, animated: Bool = true, completion: (() -> ())? = nil) {
+  public func dismissNotice(noticeView: UIView, position: NoticePosition, animated: Bool = true, dismissed: () -> Void) {
 
     let complete: () -> () = { [weak self] in
-      if let current = self?.currentNotice?.view where current == noticeView {
-        current.removeFromSuperview()
+      if let (currentView, _, completion) = self?.currentNotice where currentView == noticeView {
+        currentView.removeFromSuperview()
         self?.currentNotice = nil
+        completion()
       }
-      completion?()
+
+      dismissed()
     }
 
     if animated {
@@ -143,19 +161,19 @@ public class NoticeWindow : UIWindow {
       noticeView.layer.addAnimation(animation, forKey: "slide out")
       CATransaction.commit()
     } else {
-      complete()
+      dismissed()
     }
 
   }
 
-  func noticeTouched() {
+  @objc private func noticeTouched() {
     dismissCurrentNotice()
   }
 
   public override func layoutSubviews() {
     super.layoutSubviews()
 
-    if let (noticeView, _) = currentNotice {
+    if let (noticeView, _, _) = currentNotice {
       bringSubviewToFront(noticeView)
     }
   }
