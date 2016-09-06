@@ -35,7 +35,7 @@ class NoticeView: UIView {
 
       horizontalStackView.spacing = style.imageSpacing
 
-      top.constant = style.insets.top
+      top.constant = style.adjustedTopInset
       leading.constant = style.insets.left
       bottom.constant = style.insets.bottom
       trailing.constant = style.insets.right
@@ -66,6 +66,10 @@ class NoticeView: UIView {
         rightImage.hidden = true
       }
     }
+  }
+
+  override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    top.constant = style.adjustedTopInset
   }
 }
 
@@ -105,5 +109,15 @@ internal extension NSBundle {
     }
 
     return nil
+  }
+}
+
+private extension NoticeViewStyle {
+  var adjustedTopInset: CGFloat {
+    if adjustTopInsetForStatusBar && position == .Top {
+      return insets.top + UIApplication.sharedApplication().statusBarFrame.height
+    }
+
+    return insets.top
   }
 }

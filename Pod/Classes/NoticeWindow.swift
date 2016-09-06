@@ -22,6 +22,25 @@ public class NoticeWindow : UIWindow {
   /// current notice view that is presented
   private var currentNotice: (view: UIView, position: NoticePosition)?
 
+  override public var frame: CGRect {
+    didSet {
+
+      guard
+        let (currentView, _) = self.currentNotice,
+        let noticeView = currentView as? NoticeView
+        where noticeView.style.adjustTopInsetForStatusBar
+      else { return }
+
+      // For some reason, statusBarFrame hasn't been updated yet atm, but it is in next event loop
+      dispatch_async(dispatch_get_main_queue()) {
+
+        // Trigger update of style
+        let style = noticeView.style
+        noticeView.style = style
+      }
+    }
+  }
+
   public func presentView(view: UIView, duration: NSTimeInterval? = 5, position: NoticePosition = .Top, animated: Bool = true, completion: (() -> Void)? = nil) {
 
     if currentNotice != nil {
