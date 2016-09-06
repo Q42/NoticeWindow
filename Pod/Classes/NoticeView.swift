@@ -33,6 +33,8 @@ class NoticeView: UIView {
       titleLabel.textColor = style.textColor
       messageLabel.textColor = style.textColor
 
+      messageLabel.numberOfLines = style.messageNumberOfLines
+
       horizontalStackView.spacing = style.imageSpacing
 
       top.constant = style.adjustedTopInset
@@ -70,45 +72,6 @@ class NoticeView: UIView {
 
   override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
     top.constant = style.adjustedTopInset
-  }
-}
-
-extension NoticeWindow {
-
-  public func presentNotice(
-    title title: String,
-    message: String,
-    style: NoticeViewStyle,
-    duration: NSTimeInterval = 5,
-    animated: Bool = true,
-    completion: (() -> ())? = nil)
-  {
-    guard let bundle = NSBundle.noticeWindowBundle else {
-      return print("NoticeWindow error: Could not load the NoticeWindow bundle.")
-    }
-
-    guard let view = UINib(nibName: "NoticeView", bundle: bundle).instantiateWithOwner(nil, options: nil)[0] as? NoticeView else {
-      return print("NoticeWindow error: Could not instantiate the NoticeView nib.")
-    }
-
-    view.titleLabel.text = title
-    view.messageLabel.text = message
-
-    view.style = style
-
-    presentView(view, duration: duration, position: style.position, animated: animated, completion: completion)
-  }
-}
-
-internal extension NSBundle {
-  static var noticeWindowBundle: NSBundle? {
-    let podBundle = NSBundle(forClass: NoticeWindow.classForCoder())
-
-    if let bundleURL = podBundle.URLForResource("NoticeWindow", withExtension: "bundle") {
-      return NSBundle(URL: bundleURL)
-    }
-
-    return nil
   }
 }
 

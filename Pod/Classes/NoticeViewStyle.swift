@@ -12,8 +12,10 @@ public struct NoticeViewStyle {
 
   public var backgroundColor: UIColor
   public var textColor: UIColor
-  public var position: NoticePosition
 
+  public var messageNumberOfLines: Int
+
+  public var position: NoticePosition
   public var adjustTopInsetForStatusBar: Bool
 
   public var insets: UIEdgeInsets
@@ -25,6 +27,7 @@ public struct NoticeViewStyle {
   public init(
     backgroundColor: UIColor = UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00),
     textColor: UIColor = .whiteColor(),
+    messageNumberOfLines: Int = 0,
     position: NoticePosition = .Top,
     adjustTopInsetForStatusBar: Bool = true,
     insets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10),
@@ -34,6 +37,8 @@ public struct NoticeViewStyle {
   {
     self.backgroundColor = backgroundColor
     self.textColor = textColor
+    self.messageNumberOfLines = messageNumberOfLines
+
     self.position = position
     self.adjustTopInsetForStatusBar = adjustTopInsetForStatusBar
 
