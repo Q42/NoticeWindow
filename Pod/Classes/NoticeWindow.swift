@@ -139,7 +139,7 @@ extension NoticeWindow {
 
   public func presentNotice(title: String, message: String, style: Style, duration: NSTimeInterval = 5, animated: Bool = true, completion: (() -> ())? = nil) {
 
-    let podBundle = NSBundle(forClass: self.classForCoder)
+    let podBundle = NSBundle(forClass: NoticeWindow.classForCoder())
     guard let bundleURL = podBundle.URLForResource("NoticeWindow", withExtension: "bundle"), bundle = NSBundle(URL: bundleURL) else {
       return print("NoticeWindow error: Could not load the NoticeWindow bundle.")
     }

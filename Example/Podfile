@@ -1,12 +1,15 @@
 source 'https://github.com/CocoaPods/Specs.git'
-use_frameworks!
+platform :ios, '9.0'
 
-target 'NoticeWindow_Example', :exclusive => true do
-  pod "NoticeWindow", :path => "../"
-end
+abstract_target 'NoticeWindowPods' do
+  use_frameworks!
 
-target 'NoticeWindow_Tests', :exclusive => true do
   pod "NoticeWindow", :path => "../"
 
+  target 'NoticeWindow_Example' do
+  end
   
+  target 'NoticeWindow_Tests' do
+  end
+
 end

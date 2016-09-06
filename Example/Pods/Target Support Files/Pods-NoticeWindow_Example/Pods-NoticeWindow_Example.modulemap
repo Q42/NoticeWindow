@@ -1,6 +1,0 @@
-framework module Pods_NoticeWindow_Example {
-  umbrella header "Pods-NoticeWindow_Example-umbrella.h"
-
-  export *
-  module * { export * }
-}
