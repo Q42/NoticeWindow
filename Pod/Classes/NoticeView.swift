@@ -11,6 +11,17 @@ import UIKit
 
 class NoticeView: UIView {
 
+  @IBOutlet weak var top: NSLayoutConstraint!
+  @IBOutlet weak var leading: NSLayoutConstraint!
+  @IBOutlet weak var bottom: NSLayoutConstraint!
+  @IBOutlet weak var trailing: NSLayoutConstraint!
+
+  @IBOutlet weak var leftImage: UIImageView!
+  @IBOutlet weak var rightImage: UIImageView!
+
+  @IBOutlet weak var leftImageWidth: NSLayoutConstraint!
+  @IBOutlet weak var rightImageWidth: NSLayoutConstraint!
+
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var messageLabel: UILabel!
 }
@@ -20,36 +31,50 @@ public struct NoticeViewStyle {
   public var backgroundColor: UIColor
   public var textColor: UIColor
   public var position: NoticePosition
+  public var insets: UIEdgeInsets
+
+  public var adjustTopInsetForStatusBar: Bool
 
   public init(
     backgroundColor: UIColor = UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00),
     textColor: UIColor = .whiteColor(),
-    position: NoticePosition = .Top
-    )
+    position: NoticePosition = .Top,
+    insets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10),
+    adjustTopInsetForStatusBar: Bool = true
+  )
   {
     self.backgroundColor = backgroundColor
     self.textColor = textColor
     self.position = position
+    self.insets = insets
+    self.adjustTopInsetForStatusBar = adjustTopInsetForStatusBar
   }
 
   public static var success: NoticeViewStyle {
     return NoticeViewStyle(
       backgroundColor: UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00),
-      textColor: UIColor.whiteColor()
+      textColor: .whiteColor()
     )
   }
 
   public static var error: NoticeViewStyle {
     return NoticeViewStyle(
       backgroundColor: UIColor(red: 0.867, green: 0.125, blue: 0.125, alpha: 1.00),
-      textColor: UIColor.whiteColor()
+      textColor: .whiteColor()
     )
   }
 }
 
 extension NoticeWindow {
 
-  public func presentNotice(title: String, message: String, style: NoticeViewStyle, duration: NSTimeInterval = 5, animated: Bool = true, completion: (() -> ())? = nil) {
+  public func presentNotice(
+    title title: String,
+    message: String,
+    style: NoticeViewStyle,
+    duration: NSTimeInterval = 5,
+    animated: Bool = true,
+    completion: (() -> ())? = nil)
+  {
 
     let podBundle = NSBundle(forClass: NoticeWindow.classForCoder())
     guard let bundleURL = podBundle.URLForResource("NoticeWindow", withExtension: "bundle"), bundle = NSBundle(URL: bundleURL) else {
@@ -66,6 +91,16 @@ extension NoticeWindow {
     view.backgroundColor = style.backgroundColor
     view.titleLabel.textColor = style.textColor
     view.messageLabel.textColor = style.textColor
+
+    view.leftImage.hidden = true
+    view.rightImage.hidden = true
+
+    let diff: CGFloat = style.position == .Top && style.adjustTopInsetForStatusBar ? 20 : 0
+
+    view.top.constant = style.insets.top + diff
+    view.leading.constant = style.insets.left
+    view.bottom.constant = style.insets.bottom
+    view.trailing.constant = style.insets.right
 
     presentView(view, duration: duration, position: style.position, animated: animated, completion: completion)
   }
