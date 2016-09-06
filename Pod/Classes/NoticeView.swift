@@ -26,6 +26,47 @@ class NoticeView: UIView {
 
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var messageLabel: UILabel!
+
+  var style: NoticeViewStyle = NoticeViewStyle() {
+    didSet {
+      backgroundColor = style.backgroundColor
+      titleLabel.textColor = style.textColor
+      messageLabel.textColor = style.textColor
+
+      horizontalStackView.spacing = style.imageSpacing
+
+      top.constant = style.insets.top
+      leading.constant = style.insets.left
+      bottom.constant = style.insets.bottom
+      trailing.constant = style.insets.right
+
+      if let image = style.leftImage {
+        leftImage.hidden = false
+
+        leftImageWidth.constant = image.width
+
+        leftImage.image = image.image
+        leftImage.tintColor = image.tintColor
+        leftImage.contentMode = image.contentMode
+      }
+      else {
+        leftImage.hidden = true
+      }
+
+      if let image = style.rightImage {
+        rightImage.hidden = false
+
+        rightImageWidth.constant = image.width
+
+        rightImage.image = image.image
+        rightImage.tintColor = image.tintColor
+        rightImage.contentMode = image.contentMode
+      }
+      else {
+        rightImage.hidden = true
+      }
+    }
+  }
 }
 
 extension NoticeWindow {
@@ -49,19 +90,7 @@ extension NoticeWindow {
     view.titleLabel.text = title
     view.messageLabel.text = message
 
-    view.backgroundColor = style.backgroundColor
-    view.titleLabel.textColor = style.textColor
-    view.messageLabel.textColor = style.textColor
-
-    view.leftImage.hidden = true
-    view.rightImage.image = UIImage(named: "notice-view-disclosure-icon", inBundle: bundle, compatibleWithTraitCollection: nil)?.imageWithRenderingMode(.AlwaysTemplate)
-    view.rightImage.contentMode = .Right
-    view.rightImage.tintColor = UIColor.whiteColor()
-
-    view.top.constant = style.insets.top
-    view.leading.constant = style.insets.left
-    view.bottom.constant = style.insets.bottom
-    view.trailing.constant = style.insets.right
+    view.style = style
 
     presentView(view, duration: duration, position: style.position, animated: animated, completion: completion)
   }

@@ -64,7 +64,7 @@ public struct NoticeImage {
   public var image: UIImage?
   public var contentMode: UIViewContentMode
   public var tintColor: UIColor
-  public var width: CGFloat?
+  public var width: CGFloat
 
   public init(
     image: UIImage?,
@@ -75,7 +75,7 @@ public struct NoticeImage {
     self.image = image
     self.contentMode = contentMode
     self.tintColor = tintColor
-    self.width = width ?? image?.size.width
+    self.width = width ?? image?.size.width ?? 0
   }
 
   public static var close: NoticeImage {
