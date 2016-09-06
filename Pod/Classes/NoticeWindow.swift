@@ -130,14 +130,36 @@ public class NoticeWindow : UIWindow {
   }
 }
 
-extension NoticeWindow {
+public struct NoticeViewStyle {
+  public var backgroundColor: UIColor
+  public var textColor: UIColor
 
-  public enum Style {
-    case Success
-    case Error
+  public init(
+    backgroundColor: UIColor = UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00),
+    textColor: UIColor = UIColor.whiteColor())
+  {
+    self.backgroundColor = backgroundColor
+    self.textColor = textColor
   }
 
-  public func presentNotice(title: String, message: String, style: Style, duration: NSTimeInterval = 5, animated: Bool = true, completion: (() -> ())? = nil) {
+  public static var success: NoticeViewStyle {
+    return NoticeViewStyle(
+      backgroundColor: UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00),
+      textColor: UIColor.whiteColor()
+    )
+  }
+
+  public static var error: NoticeViewStyle {
+    return NoticeViewStyle(
+      backgroundColor: UIColor(red: 0.867, green: 0.125, blue: 0.125, alpha: 1.00),
+      textColor: UIColor.whiteColor()
+    )
+  }
+}
+
+extension NoticeWindow {
+
+  public func presentNotice(title: String, message: String, style: NoticeViewStyle, duration: NSTimeInterval = 5, animated: Bool = true, completion: (() -> ())? = nil) {
 
     let podBundle = NSBundle(forClass: NoticeWindow.classForCoder())
     guard let bundleURL = podBundle.URLForResource("NoticeWindow", withExtension: "bundle"), bundle = NSBundle(URL: bundleURL) else {
@@ -151,12 +173,9 @@ extension NoticeWindow {
     view.titleLabel.text = title
     view.messageLabel.text = message
 
-    switch style {
-    case .Success:
-      view.backgroundColor = UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00)
-    case .Error:
-      view.backgroundColor = UIColor(red: 0.867, green: 0.125, blue: 0.125, alpha: 1.00)
-    }
+    view.backgroundColor = style.backgroundColor
+    view.titleLabel.textColor = style.textColor
+    view.messageLabel.textColor = style.textColor
     
     presentView(view, duration: duration, animated: animated, completion: completion)
   }
