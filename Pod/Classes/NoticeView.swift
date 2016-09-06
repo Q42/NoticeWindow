@@ -38,7 +38,7 @@ public struct NoticeViewStyle {
   public init(
     backgroundColor: UIColor = UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00),
     textColor: UIColor = .whiteColor(),
-    position: NoticePosition = .Top,
+    position: NoticePosition = .Bottom,
     insets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10),
     adjustTopInsetForStatusBar: Bool = true
   )
@@ -75,9 +75,7 @@ extension NoticeWindow {
     animated: Bool = true,
     completion: (() -> ())? = nil)
   {
-
-    let podBundle = NSBundle(forClass: NoticeWindow.classForCoder())
-    guard let bundleURL = podBundle.URLForResource("NoticeWindow", withExtension: "bundle"), bundle = NSBundle(URL: bundleURL) else {
+    guard let bundle = NSBundle.noticeWindowBundle else {
       return print("NoticeWindow error: Could not load the NoticeWindow bundle.")
     }
 
@@ -93,7 +91,10 @@ extension NoticeWindow {
     view.messageLabel.textColor = style.textColor
 
     view.leftImage.hidden = true
-    view.rightImage.hidden = true
+    view.rightImage.image = UIImage(named: "notice-view-close-icon", inBundle: bundle, compatibleWithTraitCollection: nil)?.imageWithRenderingMode(.AlwaysTemplate)
+    view.rightImage.contentMode = .Right
+    view.rightImage.tintColor = UIColor.whiteColor()
+
 
     let diff: CGFloat = style.position == .Top && style.adjustTopInsetForStatusBar ? 20 : 0
 
@@ -103,5 +104,17 @@ extension NoticeWindow {
     view.trailing.constant = style.insets.right
 
     presentView(view, duration: duration, position: style.position, animated: animated, completion: completion)
+  }
+}
+
+internal extension NSBundle {
+  static var noticeWindowBundle: NSBundle? {
+    let podBundle = NSBundle(forClass: NoticeWindow.classForCoder())
+
+    if let bundleURL = podBundle.URLForResource("NoticeWindow", withExtension: "bundle") {
+      return NSBundle(URL: bundleURL)
+    }
+
+    return nil
   }
 }

@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Pod/Classes/*'
   s.resource_bundles = {
-    'NoticeWindow' => ['Pod/Resources/*.xib']
+    'NoticeWindow' => ['Pod/Resources/*.xib', 'Pod/Assets/*.png']
   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'

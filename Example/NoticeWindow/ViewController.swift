@@ -11,11 +11,11 @@ import UIKit
 class ViewController: UIViewController {
 
   @IBAction func presentDefaultSuccessNotice(sender: AnyObject) {
-    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.presentNotice("This is great", message: "Something went very well", style: .success)
+    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.presentNotice(title: "This is great", message: "Something went very well", style: .success)
   }
   
   @IBAction func presentDefaultErrorNotice(sender: AnyObject) {
-    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.presentNotice("Oops", message: "An error has occurred", style: .error)
+    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.presentNotice(title: "Oops", message: "An error has occurred", style: .error)
   }
 
   @IBAction func presentCustomSuccessNotice(sender: AnyObject) {
