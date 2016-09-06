@@ -91,7 +91,7 @@ extension NoticeWindow {
     view.messageLabel.textColor = style.textColor
 
     view.leftImage.hidden = true
-    view.rightImage.image = UIImage(named: "notice-view-close-icon", inBundle: bundle, compatibleWithTraitCollection: nil)?.imageWithRenderingMode(.AlwaysTemplate)
+    view.rightImage.image = UIImage(named: "notice-view-disclosure-icon", inBundle: bundle, compatibleWithTraitCollection: nil)?.imageWithRenderingMode(.AlwaysTemplate)
     view.rightImage.contentMode = .Right
     view.rightImage.tintColor = UIColor.whiteColor()
 
