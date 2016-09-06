@@ -16,6 +16,8 @@ class NoticeView: UIView {
   @IBOutlet weak var bottom: NSLayoutConstraint!
   @IBOutlet weak var trailing: NSLayoutConstraint!
 
+  @IBOutlet weak var horizontalStackView: UIStackView!
+
   @IBOutlet weak var leftImage: UIImageView!
   @IBOutlet weak var rightImage: UIImageView!
 
@@ -24,45 +26,6 @@ class NoticeView: UIView {
 
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var messageLabel: UILabel!
-}
-
-public struct NoticeViewStyle {
-
-  public var backgroundColor: UIColor
-  public var textColor: UIColor
-  public var position: NoticePosition
-  public var insets: UIEdgeInsets
-
-  public var adjustTopInsetForStatusBar: Bool
-
-  public init(
-    backgroundColor: UIColor = UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00),
-    textColor: UIColor = .whiteColor(),
-    position: NoticePosition = .Bottom,
-    insets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10),
-    adjustTopInsetForStatusBar: Bool = true
-  )
-  {
-    self.backgroundColor = backgroundColor
-    self.textColor = textColor
-    self.position = position
-    self.insets = insets
-    self.adjustTopInsetForStatusBar = adjustTopInsetForStatusBar
-  }
-
-  public static var success: NoticeViewStyle {
-    return NoticeViewStyle(
-      backgroundColor: UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00),
-      textColor: .whiteColor()
-    )
-  }
-
-  public static var error: NoticeViewStyle {
-    return NoticeViewStyle(
-      backgroundColor: UIColor(red: 0.867, green: 0.125, blue: 0.125, alpha: 1.00),
-      textColor: .whiteColor()
-    )
-  }
 }
 
 extension NoticeWindow {
@@ -95,10 +58,7 @@ extension NoticeWindow {
     view.rightImage.contentMode = .Right
     view.rightImage.tintColor = UIColor.whiteColor()
 
-
-    let diff: CGFloat = style.position == .Top && style.adjustTopInsetForStatusBar ? 20 : 0
-
-    view.top.constant = style.insets.top + diff
+    view.top.constant = style.insets.top
     view.leading.constant = style.insets.left
     view.bottom.constant = style.insets.bottom
     view.trailing.constant = style.insets.right

@@ -57,6 +57,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="bottom" destination="YtX-5w-kSV" id="eDe-f9-Sai"/>
+                <outlet property="horizontalStackView" destination="H42-E0-yUc" id="soi-gu-vdC"/>
                 <outlet property="leading" destination="8Sf-EX-v2c" id="D7l-Ux-lLu"/>
                 <outlet property="leftImage" destination="1Ew-n3-aC0" id="XoW-vg-aFc"/>
                 <outlet property="leftImageWidth" destination="Edq-e7-cWv" id="XRW-ak-iOT"/>
