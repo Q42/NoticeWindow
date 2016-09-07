@@ -14,19 +14,41 @@ public enum NoticePosition {
   case Bottom
 }
 
+public struct Notice {
+  public var view: UIView
+  public var duration: NSTimeInterval?
+  public var position: NoticePosition
+  public var dismissOnTouch: Bool
+  public var tapHandler: () -> Void
+  public var completion: () -> Void
+
+  public init(
+    view: UIView,
+    position: NoticePosition = .Top,
+    duration: NSTimeInterval? = NSTimeInterval(5),
+    dismissOnTouch: Bool = true,
+    tapHandler: () -> Void = {},
+    completion: () -> Void = {})
+  {
+    self.view = view
+    self.position = position
+    self.duration = duration
+    self.dismissOnTouch = dismissOnTouch
+    self.tapHandler = tapHandler
+    self.completion = completion
+  }
+}
+
 public class NoticeWindow : UIWindow {
 
-  /// pending notice
-  private var pendingNotice: (UIView, NoticePosition, () -> Void)?
-
-  /// current notice view that is presented
-  private var currentNotice: (view: UIView, position: NoticePosition, completion: () -> Void)?
+  private var pending: Notice?
+  private var current: Notice?
 
   override public var frame: CGRect {
     didSet {
 
       guard
-        let current = self.currentNotice,
+        let current = self.current,
         let noticeView = current.view as? NoticeView
         where noticeView.style.adjustTopInsetForStatusBar
       else { return }
@@ -34,53 +56,40 @@ public class NoticeWindow : UIWindow {
       // For some reason, statusBarFrame hasn't been updated yet atm, but it is in next event loop
       dispatch_async(dispatch_get_main_queue()) {
 
-        // Trigger update of style
+        // Trigger update of style top inset
         let style = noticeView.style
         noticeView.style = style
       }
     }
   }
 
-  public func presentView(view: UIView, duration: NSTimeInterval? = 5, position: NoticePosition = .Top, animated: Bool = true, completion: (() -> Void)? = nil) {
-
-    if currentNotice != nil {
-      pendingNotice = (view, position, { completion?() })
+  public func present(notice notice: Notice, animated: Bool = true)
+  {
+    if current != nil {
+      pending = notice
 
       dismissCurrentNotice(animated) { [weak self] in
-        if let (pendingView, pendingPosition, pendingCompletion) = self?.pendingNotice {
-          self?.showView(
-            view: pendingView,
-            duration: duration,
-            position: pendingPosition,
-            animated: animated,
-            dismissOnTouch: true,
-            presented: { },
-            completion: pendingCompletion)
-          self?.pendingNotice = nil
+        if let pending = self?.pending {
+          self?.showImmediately(notice: pending, animated: animated)
+          self?.pending = nil
         }
       }
 
     }
     else {
-
-      showView(
-        view: view,
-        duration: duration,
-        position: position,
-        animated: animated,
-        dismissOnTouch: true,
-        presented: { },
-        completion: { completion?() })
+      showImmediately(notice: notice, animated: animated)
     }
   }
 
-  private func showView(view view: UIView, duration: NSTimeInterval?, position: NoticePosition, animated: Bool, dismissOnTouch: Bool, presented: () -> Void, completion: () -> Void) {
+  private func showImmediately(notice notice: Notice, animated: Bool) {
 
-    if dismissOnTouch {
+    current = notice
+    let view = notice.view
+
+    if notice.dismissOnTouch {
       view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noticeTouched)))
     }
 
-    currentNotice = (view, position, completion)
     addSubview(view)
 
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -90,7 +99,7 @@ public class NoticeWindow : UIWindow {
       NSLayoutConstraint(item: view, attribute: .Right, relatedBy: .Equal, toItem: view.superview, attribute: .Right, multiplier: 1, constant: 0)
     ])
 
-    switch position {
+    switch notice.position {
     case .Top:
       addConstraint(NSLayoutConstraint(item: view, attribute: .Top, relatedBy: .Equal, toItem: view.superview, attribute: .Top, multiplier: 1, constant: 0))
 
@@ -101,11 +110,11 @@ public class NoticeWindow : UIWindow {
     view.layoutIfNeeded()
 
     // If the notice has a finite duration we schedule a dismiss callback
-    if let duration = duration {
+    if let duration = notice.duration {
       let when = dispatch_time(DISPATCH_TIME_NOW, Int64(duration * Double(NSEC_PER_SEC)))
       dispatch_after(when, dispatch_get_main_queue()) { [weak self] in
         // only dismiss when we it's the same notice
-        if self?.currentNotice?.view === view {
+        if self?.current?.view === view {
           self?.dismissCurrentNotice()
         }
       }
@@ -113,68 +122,77 @@ public class NoticeWindow : UIWindow {
 
     if animated {
       CATransaction.begin()
-      CATransaction.setCompletionBlock(presented)
 
       let animation = CABasicAnimation(keyPath: "transform.translation.y")
       animation.duration = 0.25
-      animation.fromValue = position == .Top ? -view.frame.size.height : +view.frame.size.height
+      animation.fromValue = notice.position == .Top ? -view.frame.size.height : +view.frame.size.height
       animation.toValue = 0
       animation.removedOnCompletion = false
       animation.fillMode = kCAFillModeForwards
 
       view.layer.addAnimation(animation, forKey: "slide in")
       CATransaction.commit()
-    } else {
-      presented()
     }
   }
 
   public func dismissCurrentNotice(animated: Bool = true, dismissed: (() -> Void)? = nil) {
-    if let (noticeView, position, _) = self.currentNotice
-      where noticeView.layer.animationForKey("slide out") == nil
+    if let current = self.current
+      where current.view.layer.animationForKey("slide out") == nil
     {
-      dismissNotice(noticeView, position: position, animated: animated, dismissed: { dismissed?() })
+      dismiss(notice: current, animated: animated, dismissed: dismissed)
     }
   }
 
-  public func dismissNotice(noticeView: UIView, position: NoticePosition, animated: Bool = true, dismissed: () -> Void) {
+  public func dismiss(notice notice: Notice, animated: Bool = true, dismissed: (() -> Void)? = nil) {
 
     let complete: () -> () = { [weak self] in
-      if let (currentView, _, completion) = self?.currentNotice where currentView == noticeView {
-        currentView.removeFromSuperview()
-        self?.currentNotice = nil
-        completion()
+      if let current = self?.current where current.view === notice.view {
+        current.view.removeFromSuperview()
+        self?.current = nil
+        current.completion()
       }
 
-      dismissed()
+      dismissed?()
     }
+
+    let view = notice.view
 
     if animated {
       CATransaction.begin()
       CATransaction.setCompletionBlock(complete)
       let animation = CABasicAnimation(keyPath: "transform.translation.y")
       animation.duration = 0.25
-      animation.toValue = position == .Top ? -noticeView.frame.size.height : +noticeView.frame.size.height
+      animation.toValue = notice.position == .Top ? -view.frame.size.height : +view.frame.size.height
       animation.removedOnCompletion = false
       animation.fillMode = kCAFillModeForwards
 
-      noticeView.layer.addAnimation(animation, forKey: "slide out")
+      view.layer.addAnimation(animation, forKey: "slide out")
       CATransaction.commit()
     } else {
-      dismissed()
+      complete()
     }
 
   }
 
   @objc private func noticeTouched() {
+    current?.tapHandler()
     dismissCurrentNotice()
   }
 
   public override func layoutSubviews() {
     super.layoutSubviews()
 
-    if let (noticeView, _, _) = currentNotice {
-      bringSubviewToFront(noticeView)
+    if let current = self.current {
+      bringSubviewToFront(current.view)
     }
   }
+}
+
+extension NoticeWindow {
+
+  public func present(view view: UIView, duration: NSTimeInterval? = 5, position: NoticePosition = .Top, animated: Bool = true, completion: (() -> Void)? = nil) {
+    let notice = Notice(view: view, duration: duration, position: position, completion: { completion?() })
+    self.present(notice: notice, animated: animated)
+  }
+
 }

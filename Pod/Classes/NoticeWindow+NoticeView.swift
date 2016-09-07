@@ -16,6 +16,7 @@ extension NoticeWindow {
     style: NoticeViewStyle,
     duration: NSTimeInterval = 5,
     animated: Bool = true,
+    tapHandler: (() -> ())? = nil,
     completion: (() -> ())? = nil)
   {
     guard let view = NoticeView.instantiate() else { return }
@@ -25,7 +26,8 @@ extension NoticeWindow {
 
     view.style = style
 
-    presentView(view, duration: duration, position: style.position, animated: animated, completion: completion)
+    let notice = Notice(view: view, position: style.position, duration: duration, dismissOnTouch: true, tapHandler: { tapHandler?() }, completion: { completion?() })
+    present(notice: notice, animated: animated)
   }
 
   public func presentNotice(
@@ -34,6 +36,7 @@ extension NoticeWindow {
     style: NoticeViewStyle,
     duration: NSTimeInterval = 5,
     animated: Bool = true,
+    tapHandler: (() -> ())? = nil,
     completion: (() -> ())? = nil)
   {
     guard let view = NoticeView.instantiate() else { return }
@@ -43,7 +46,8 @@ extension NoticeWindow {
 
     view.style = style
 
-    presentView(view, duration: duration, position: style.position, animated: animated, completion: completion)
+    let notice = Notice(view: view, position: style.position, duration: duration, dismissOnTouch: true, tapHandler: { tapHandler?() }, completion: { completion?() })
+    present(notice: notice, animated: animated)
   }
 
 }
