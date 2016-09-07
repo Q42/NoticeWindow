@@ -13,6 +13,7 @@ public struct NoticeViewStyle {
   public var backgroundColor: UIColor
   public var textColor: UIColor
 
+  public var titleNumberOfLines: Int
   public var messageNumberOfLines: Int
 
   public var position: NoticePosition
@@ -27,6 +28,7 @@ public struct NoticeViewStyle {
   public init(
     backgroundColor: UIColor = UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00),
     textColor: UIColor = .whiteColor(),
+    titleNumberOfLines: Int = 0,
     messageNumberOfLines: Int = 0,
     position: NoticePosition = .Top,
     adjustTopInsetForStatusBar: Bool = true,
@@ -37,6 +39,8 @@ public struct NoticeViewStyle {
   {
     self.backgroundColor = backgroundColor
     self.textColor = textColor
+
+    self.titleNumberOfLines = titleNumberOfLines
     self.messageNumberOfLines = messageNumberOfLines
 
     self.position = position

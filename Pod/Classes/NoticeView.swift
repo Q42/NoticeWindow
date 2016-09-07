@@ -33,6 +33,7 @@ class NoticeView: UIView {
       titleLabel.textColor = style.textColor
       messageLabel.textColor = style.textColor
 
+      titleLabel.numberOfLines = style.titleNumberOfLines
       messageLabel.numberOfLines = style.messageNumberOfLines
 
       horizontalStackView.spacing = style.imageSpacing
