@@ -1,15 +1,6 @@
-source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
+use_frameworks!
 
-abstract_target 'NoticeWindowPods' do
-  use_frameworks!
+pod "NoticeWindow", :path => "../"
 
-  pod "NoticeWindow", :path => "../"
-
-  target 'NoticeWindow_Example' do
-  end
-  
-  target 'NoticeWindow_Tests' do
-  end
-
-end
+target 'NoticeWindow_Example'
