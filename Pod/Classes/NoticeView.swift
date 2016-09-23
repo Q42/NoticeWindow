@@ -11,11 +11,6 @@ import UIKit
 
 class NoticeView: UIView {
 
-  @IBOutlet weak var top: NSLayoutConstraint!
-  @IBOutlet weak var leading: NSLayoutConstraint!
-  @IBOutlet weak var bottom: NSLayoutConstraint!
-  @IBOutlet weak var trailing: NSLayoutConstraint!
-
   @IBOutlet weak var horizontalStackView: UIStackView!
 
   @IBOutlet weak var leftImage: UIImageView!
@@ -38,10 +33,8 @@ class NoticeView: UIView {
 
       horizontalStackView.spacing = style.imageSpacing
 
-      top.constant = style.adjustedTopInset
-      leading.constant = style.insets.left
-      bottom.constant = style.insets.bottom
-      trailing.constant = style.insets.right
+      layoutMargins = style.insets
+      layoutMargins.top = style.adjustedTopInset
 
       if let image = style.leftImage {
         leftImage.hidden = false
@@ -72,7 +65,7 @@ class NoticeView: UIView {
   }
 
   override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-    top.constant = style.adjustedTopInset
+    layoutMargins.top = style.adjustedTopInset
   }
 }
 
