@@ -10,20 +10,20 @@ import UIKit
 
 class ViewController: UIViewController {
 
-  @IBAction func presentDefaultSuccessNotice(sender: AnyObject) {
-    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.presentNotice("This is great", message: "Something went very well", style: .Success)
+  @IBAction func presentDefaultSuccessNotice(_ sender: AnyObject) {
+    (UIApplication.shared.delegate as? AppDelegate)?.noticeWindow.presentNotice("This is great", message: "Something went very well", style: .success)
   }
   
-  @IBAction func presentDefaultErrorNotice(sender: AnyObject) {
-    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.presentNotice("Oops", message: "An error has occurred", style: .Error)
+  @IBAction func presentDefaultErrorNotice(_ sender: AnyObject) {
+    (UIApplication.shared.delegate as? AppDelegate)?.noticeWindow.presentNotice("Oops", message: "An error has occurred", style: .error)
   }
 
-  @IBAction func presentCustomSuccessNotice(sender: AnyObject) {
-    Notice(title: "My Custom success notice", style: .Success).present()
+  @IBAction func presentCustomSuccessNotice(_ sender: AnyObject) {
+    Notice(title: "My Custom success notice", style: .success).present()
   }
 
-  @IBAction func presentCustomErrorNotice(sender: AnyObject) {
-    Notice(title: "My custom error notice", style: .Error).present()
+  @IBAction func presentCustomErrorNotice(_ sender: AnyObject) {
+    Notice(title: "My custom error notice", style: .error).present()
   }
 
 }

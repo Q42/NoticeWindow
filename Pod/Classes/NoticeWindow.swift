@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public class NoticeWindow : UIWindow {
+open class NoticeWindow : UIWindow {
 
   /// pending notice
   private var pendingNoticeView: UIView?
@@ -17,7 +17,7 @@ public class NoticeWindow : UIWindow {
   /// current notice view that is presented
   private var currentNoticeView: UIView?
 
-  public func presentView(view: UIView, duration: NSTimeInterval? = 5, animated: Bool = true, completion: (() -> Void)? = nil) {
+  open func presentView(_ view: UIView, duration: TimeInterval? = 5, animated: Bool = true, completion: (() -> Void)? = nil) {
 
     if currentNoticeView != nil {
       pendingNoticeView = view
@@ -34,10 +34,10 @@ public class NoticeWindow : UIWindow {
     }
   }
 
-  private func showView(view: UIView, duration: NSTimeInterval? = 5, animated: Bool = true, dismissOnTouch: Bool = true, completion: (() -> Void)? = nil) {
+  private func showView(_ view: UIView, duration: TimeInterval? = 5, animated: Bool = true, dismissOnTouch: Bool = true, completion: (() -> Void)? = nil) {
 
     if dismissOnTouch {
-      view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "noticeTouched"))
+      view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(NoticeWindow.noticeTouched)))
     }
 
     currentNoticeView = view
@@ -46,17 +46,17 @@ public class NoticeWindow : UIWindow {
     view.translatesAutoresizingMaskIntoConstraints = false
 
     addConstraints([
-      NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: view.superview, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0),
-      NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view.superview, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0),
-      NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: view.superview, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
+      NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: view.superview, attribute: NSLayoutAttribute.left, multiplier: 1, constant: 0),
+      NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view.superview, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0),
+      NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.right, relatedBy: NSLayoutRelation.equal, toItem: view.superview, attribute: NSLayoutAttribute.right, multiplier: 1, constant: 0)
       ])
 
     view.layoutIfNeeded()
 
     // If the notice has a finite duration we schedule a dismiss callback
     if let duration = duration {
-      let when = dispatch_time(DISPATCH_TIME_NOW, Int64(duration * Double(NSEC_PER_SEC)))
-      dispatch_after(when, dispatch_get_main_queue()) { [weak self] in
+      let when = DispatchTime.now() + Double(Int64(duration * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+      DispatchQueue.main.asyncAfter(deadline: when) { [weak self] in
         // only dismiss when we it's the same notice
         if self?.currentNoticeView === view {
           self?.dismissCurrentNotice()
@@ -73,27 +73,27 @@ public class NoticeWindow : UIWindow {
       animation.duration = 0.25
       animation.fromValue = -view.frame.size.height
       animation.toValue = 0
-      animation.removedOnCompletion = false
+      animation.isRemovedOnCompletion = false
       animation.fillMode = kCAFillModeForwards
 
-      view.layer.addAnimation(animation, forKey: "slide in")
+      view.layer.add(animation, forKey: "slide in")
       CATransaction.commit()
     } else {
       completion?()
     }
   }
 
-  public func dismissCurrentNotice(animated: Bool = true, completion: (() -> ())? = nil) {
-    guard let noticeView = self.currentNoticeView where noticeView.layer.animationForKey("slide out") == nil else {
+  open func dismissCurrentNotice(_ animated: Bool = true, completion: (() -> ())? = nil) {
+    guard let noticeView = self.currentNoticeView , noticeView.layer.animation(forKey: "slide out") == nil else {
       return
     }
     dismissNotice(noticeView, animated: animated, completion: completion)
   }
 
-  public func dismissNotice(noticeView: UIView, animated: Bool = true, completion: (() -> ())? = nil) {
+  open func dismissNotice(_ noticeView: UIView, animated: Bool = true, completion: (() -> ())? = nil) {
 
     let complete: () -> () = { [weak self] in
-      if let current = self?.currentNoticeView where current == noticeView {
+      if let current = self?.currentNoticeView , current == noticeView {
         current.removeFromSuperview()
         self?.currentNoticeView = nil
       }
@@ -106,10 +106,10 @@ public class NoticeWindow : UIWindow {
       let animation = CABasicAnimation(keyPath: "transform.translation.y")
       animation.duration = 0.25
       animation.toValue = -noticeView.frame.size.height
-      animation.removedOnCompletion = false
+      animation.isRemovedOnCompletion = false
       animation.fillMode = kCAFillModeForwards
 
-      noticeView.layer.addAnimation(animation, forKey: "slide out")
+      noticeView.layer.add(animation, forKey: "slide out")
       CATransaction.commit()
     } else {
       complete()
@@ -121,11 +121,11 @@ public class NoticeWindow : UIWindow {
     dismissCurrentNotice()
   }
 
-  public override func layoutSubviews() {
+  open override func layoutSubviews() {
     super.layoutSubviews()
 
     if let noticeView = currentNoticeView {
-      bringSubviewToFront(noticeView)
+      bringSubview(toFront: noticeView)
     }
   }
 }
@@ -133,18 +133,18 @@ public class NoticeWindow : UIWindow {
 extension NoticeWindow {
 
   public enum Style {
-    case Success
-    case Error
+    case success
+    case error
   }
 
-  public func presentNotice(title: String, message: String, style: Style, duration: NSTimeInterval = 5, animated: Bool = true, completion: (() -> ())? = nil) {
+  public func presentNotice(_ title: String, message: String, style: Style, duration: TimeInterval = 5, animated: Bool = true, completion: (() -> ())? = nil) {
 
-    let podBundle = NSBundle(forClass: self.classForCoder)
-    guard let bundleURL = podBundle.URLForResource("NoticeWindow", withExtension: "bundle"), bundle = NSBundle(URL: bundleURL) else {
+    let podBundle = Bundle(for: self.classForCoder)
+    guard let bundleURL = podBundle.url(forResource: "NoticeWindow", withExtension: "bundle"), let bundle = Bundle(url: bundleURL) else {
       return print("NoticeWindow error: Could not load the NoticeWindow bundle.")
     }
 
-    guard let view = UINib(nibName: "NoticeView", bundle: bundle).instantiateWithOwner(nil, options: nil)[0] as? NoticeView else {
+    guard let view = UINib(nibName: "NoticeView", bundle: bundle).instantiate(withOwner: nil, options: nil)[0] as? NoticeView else {
       return print("NoticeWindow error: Could not instantiate the NoticeView nib.")
     }
 
@@ -152,9 +152,9 @@ extension NoticeWindow {
     view.messageLabel.text = message
 
     switch style {
-    case .Success:
+    case .success:
       view.backgroundColor = UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00)
-    case .Error:
+    case .error:
       view.backgroundColor = UIColor(red: 0.867, green: 0.125, blue: 0.125, alpha: 1.00)
     }
     

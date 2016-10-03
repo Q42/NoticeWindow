@@ -24,9 +24,9 @@ class CustomNoticeView: UIView {
     guard let notice = self.notice else { return }
 
     switch notice.style {
-    case .Success:
+    case .success:
       backgroundColor = UIColor(red: 0.384, green: 0.483, blue: 1.000, alpha: 1.00)
-    case .Error:
+    case .error:
       backgroundColor = UIColor(red: 1.0, green: 0.641, blue: 0.218, alpha: 1.00)
     }
 

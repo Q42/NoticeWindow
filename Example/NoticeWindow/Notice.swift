@@ -14,8 +14,8 @@ struct Notice {
   let style: Style
 
   enum Style {
-    case Success
-    case Error
+    case success
+    case error
   }
 }
 
@@ -23,14 +23,14 @@ extension Notice {
 
   func present() {
 
-    let view = UINib.init(nibName: "CustomNoticeView", bundle: NSBundle.mainBundle())
-      .instantiateWithOwner(nil, options: nil)[0] as! CustomNoticeView
+    let view = UINib.init(nibName: "CustomNoticeView", bundle: Bundle.main)
+      .instantiate(withOwner: nil, options: nil)[0] as! CustomNoticeView
     view.notice = self
 
-    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.presentView(view)
+    (UIApplication.shared.delegate as? AppDelegate)?.noticeWindow.presentView(view)
   }
 
   func dismiss() {
-    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.dismissCurrentNotice()
+    (UIApplication.shared.delegate as? AppDelegate)?.noticeWindow.dismissCurrentNotice()
   }
 }
