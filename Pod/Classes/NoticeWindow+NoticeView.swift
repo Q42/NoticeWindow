@@ -15,6 +15,7 @@ extension NoticeWindow {
     message: String,
     style: NoticeViewStyle,
     duration: NSTimeInterval = 5,
+    adjustTopInsetForStatusBar: Bool = true,
     animated: Bool = true,
     tapHandler: (() -> ())? = nil,
     completion: (() -> ())? = nil)
@@ -26,7 +27,11 @@ extension NoticeWindow {
 
     view.style = style
 
-    let notice = Notice(view: view, position: style.position, duration: duration, dismissOnTouch: true, tapHandler: { tapHandler?() }, completion: { completion?() })
+    if adjustTopInsetForStatusBar && style.position == .Top {
+      view.adjustTopInset = UIApplication.sharedApplication().statusBarFrame.height
+    }
+
+    let notice = Notice(view: view, position: style.position, duration: duration, adjustTopInsetForStatusBar: adjustTopInsetForStatusBar, dismissOnTouch: true, tapHandler: { tapHandler?() }, completion: { completion?() })
     present(notice: notice, animated: animated)
   }
 
@@ -35,6 +40,7 @@ extension NoticeWindow {
     attributedMessage: NSAttributedString,
     style: NoticeViewStyle,
     duration: NSTimeInterval = 5,
+    adjustTopInsetForStatusBar: Bool = true,
     animated: Bool = true,
     tapHandler: (() -> ())? = nil,
     completion: (() -> ())? = nil)
@@ -46,7 +52,11 @@ extension NoticeWindow {
 
     view.style = style
 
-    let notice = Notice(view: view, position: style.position, duration: duration, dismissOnTouch: true, tapHandler: { tapHandler?() }, completion: { completion?() })
+    if adjustTopInsetForStatusBar && style.position == .Top {
+      view.adjustTopInset = UIApplication.sharedApplication().statusBarFrame.height
+    }
+
+    let notice = Notice(view: view, position: style.position, duration: duration, adjustTopInsetForStatusBar: adjustTopInsetForStatusBar, dismissOnTouch: true, tapHandler: { tapHandler?() }, completion: { completion?() })
     present(notice: notice, animated: animated)
   }
 

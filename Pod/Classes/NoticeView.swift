@@ -22,6 +22,12 @@ class NoticeView: UIView {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var messageLabel: UILabel!
 
+  var adjustTopInset: CGFloat = 0 {
+    didSet {
+      layoutMargins.top = style.insets.top + adjustTopInset
+    }
+  }
+
   var style: NoticeViewStyle = NoticeViewStyle() {
     didSet {
       backgroundColor = style.backgroundColor
@@ -34,7 +40,7 @@ class NoticeView: UIView {
       horizontalStackView.spacing = style.imageSpacing
 
       layoutMargins = style.insets
-      layoutMargins.top = style.adjustedTopInset
+      layoutMargins.top = style.insets.top + adjustTopInset
 
       if let image = style.leftImage {
         leftImage.hidden = false
@@ -62,19 +68,5 @@ class NoticeView: UIView {
         rightImage.hidden = true
       }
     }
-  }
-
-  override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-    layoutMargins.top = style.adjustedTopInset
-  }
-}
-
-private extension NoticeViewStyle {
-  var adjustedTopInset: CGFloat {
-    if adjustTopInsetForStatusBar && position == .Top {
-      return insets.top + UIApplication.sharedApplication().statusBarFrame.height
-    }
-
-    return insets.top
   }
 }

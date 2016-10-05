@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import NoticeWindow
 
 class ViewController: UIViewController {
 
   @IBAction func presentDefaultSuccessNotice(sender: AnyObject) {
-    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.presentNotice(title: "This is great", message: "Something went very well", style: .success)
+    var style = NoticeViewStyle.success
+    style.adjustTopInsetForStatusBar = false
+    (UIApplication.sharedApplication().delegate as? AppDelegate)?.noticeWindow.presentNotice(title: "This is great", message: "Something went very well", style: style)
   }
   
   @IBAction func presentDefaultErrorNotice(sender: AnyObject) {

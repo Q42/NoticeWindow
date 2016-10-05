@@ -18,6 +18,7 @@ public struct Notice {
   public var view: UIView
   public var duration: NSTimeInterval?
   public var position: NoticePosition
+  public var adjustTopInsetForStatusBar: Bool
   public var dismissOnTouch: Bool
   public var tapHandler: () -> Void
   public var completion: () -> Void
@@ -26,6 +27,7 @@ public struct Notice {
     view: UIView,
     position: NoticePosition = .Top,
     duration: NSTimeInterval? = NSTimeInterval(5),
+    adjustTopInsetForStatusBar: Bool, // = true,
     dismissOnTouch: Bool = true,
     tapHandler: () -> Void = {},
     completion: () -> Void = {})
@@ -34,6 +36,7 @@ public struct Notice {
     self.position = position
     self.duration = duration
     self.dismissOnTouch = dismissOnTouch
+    self.adjustTopInsetForStatusBar = adjustTopInsetForStatusBar
     self.tapHandler = tapHandler
     self.completion = completion
   }
@@ -44,21 +47,32 @@ public class NoticeWindow : UIWindow {
   private var pending: Notice?
   private var current: Notice?
 
-  override public var frame: CGRect {
-    didSet {
+  public override init(frame: CGRect) {
+    super.init(frame: frame)
 
-      guard
-        let current = self.current,
-        let noticeView = current.view as? NoticeView
-        where noticeView.style.adjustTopInsetForStatusBar
-      else { return }
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: UIApplicationDidChangeStatusBarFrameNotification, object: nil)
+  }
 
-      // For some reason, statusBarFrame hasn't been updated yet atm, but it is in next event loop
-      dispatch_async(dispatch_get_main_queue()) {
+  public required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
 
-        // Trigger update of style top inset
-        let style = noticeView.style
-        noticeView.style = style
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: UIApplicationDidChangeStatusBarFrameNotification, object: nil)
+  }
+
+  @objc private func adjustForStatusBarFrameChanges() {
+
+    guard
+      let current = self.current
+      where current.adjustTopInsetForStatusBar && current.position == .Top
+    else { return }
+
+    // For some reason, statusBarFrame hasn't been updated yet atm, but it is in next event loop
+    dispatch_async(dispatch_get_main_queue()) {
+      if let noticeView = current.view as? NoticeView {
+        noticeView.adjustTopInset = UIApplication.sharedApplication().statusBarFrame.height
+      }
+      else {
+        current.view.layoutMargins.top = UIApplication.sharedApplication().statusBarFrame.height
       }
     }
   }
@@ -190,8 +204,20 @@ public class NoticeWindow : UIWindow {
 
 extension NoticeWindow {
 
-  public func present(view view: UIView, duration: NSTimeInterval? = 5, position: NoticePosition = .Top, animated: Bool = true, completion: (() -> Void)? = nil) {
-    let notice = Notice(view: view, duration: duration, position: position, completion: { completion?() })
+  public func present(
+    view view: UIView,
+    duration: NSTimeInterval? = 5,
+    position: NoticePosition = .Top,
+    adjustTopInsetForStatusBar: Bool = true,
+    animated: Bool = true,
+    completion: (() -> Void)? = nil)
+  {
+
+    if adjustTopInsetForStatusBar && position == .Top {
+      view.layoutMargins.top = UIApplication.sharedApplication().statusBarFrame.height
+    }
+
+    let notice = Notice(view: view, duration: duration, position: position, adjustTopInsetForStatusBar: adjustTopInsetForStatusBar, completion: { completion?() })
     self.present(notice: notice, animated: animated)
   }
 
