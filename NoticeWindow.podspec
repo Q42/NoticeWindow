@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "NoticeWindow"
-  s.version          = "0.2.2"
+  s.version          = "0.2.4"
   s.summary          = "Present your custom notices in the application window."
 
 # This description is used to generate tags and improve search results.
