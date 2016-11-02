@@ -1,0 +1,16 @@
+PODS:
+  - NoticeWindow (0.2.2)
+
+DEPENDENCIES:
+  - NoticeWindow (from `../`)
+
+EXTERNAL SOURCES:
+  NoticeWindow:
+    :path: ../
+
+SPEC CHECKSUMS:
+  NoticeWindow: 1c3dab17e4f451c99b7bc424484f65d4d6712bea
+
+PODFILE CHECKSUM: 8c5f1aeb735df0de77d0b729364db70e7c755fbd
+
+COCOAPODS: 1.1.1
