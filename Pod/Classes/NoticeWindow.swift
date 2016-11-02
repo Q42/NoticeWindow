@@ -155,6 +155,9 @@ public class NoticeWindow : UIWindow {
     {
       dismiss(notice: current, animated: animated, dismissed: dismissed)
     }
+    else {
+      dismissed?()
+    }
   }
 
   public func dismiss(notice notice: Notice, animated: Bool = true, dismissed: (() -> Void)? = nil) {
