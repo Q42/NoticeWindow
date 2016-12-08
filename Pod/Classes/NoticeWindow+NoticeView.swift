@@ -11,10 +11,10 @@ import UIKit
 extension NoticeWindow {
 
   public func presentNotice(
-    title title: String,
+    title: String,
     message: String,
     style: NoticeViewStyle,
-    duration: NSTimeInterval = 5,
+    duration: TimeInterval = 5,
     adjustTopInsetForStatusBar: Bool = true,
     animated: Bool = true,
     tapHandler: (() -> ())? = nil,
@@ -27,8 +27,8 @@ extension NoticeWindow {
 
     view.style = style
 
-    if adjustTopInsetForStatusBar && style.position == .Top {
-      view.adjustTopInset = UIApplication.sharedApplication().statusBarFrame.height
+    if adjustTopInsetForStatusBar && style.position == .top {
+      view.adjustTopInset = UIApplication.shared.statusBarFrame.height
     }
 
     let notice = Notice(view: view, position: style.position, duration: duration, adjustTopInsetForStatusBar: adjustTopInsetForStatusBar, dismissOnTouch: true, tapHandler: { tapHandler?() }, completion: { completion?() })
@@ -36,10 +36,10 @@ extension NoticeWindow {
   }
 
   public func presentNotice(
-    attributedTitle attributedTitle: NSAttributedString,
+    attributedTitle: NSAttributedString,
     attributedMessage: NSAttributedString,
     style: NoticeViewStyle,
-    duration: NSTimeInterval = 5,
+    duration: TimeInterval = 5,
     adjustTopInsetForStatusBar: Bool = true,
     animated: Bool = true,
     tapHandler: (() -> ())? = nil,
@@ -52,8 +52,8 @@ extension NoticeWindow {
 
     view.style = style
 
-    if adjustTopInsetForStatusBar && style.position == .Top {
-      view.adjustTopInset = UIApplication.sharedApplication().statusBarFrame.height
+    if adjustTopInsetForStatusBar && style.position == .top {
+      view.adjustTopInset = UIApplication.shared.statusBarFrame.height
     }
 
     let notice = Notice(view: view, position: style.position, duration: duration, adjustTopInsetForStatusBar: adjustTopInsetForStatusBar, dismissOnTouch: true, tapHandler: { tapHandler?() }, completion: { completion?() })
@@ -64,12 +64,12 @@ extension NoticeWindow {
 
 internal extension NoticeView {
   static func instantiate() -> NoticeView? {
-    guard let bundle = NSBundle.noticeWindowBundle else {
+    guard let bundle = Bundle.noticeWindowBundle else {
       print("NoticeWindow error: Could not load the NoticeWindow bundle.")
       return nil
     }
 
-    guard let view = UINib(nibName: "NoticeView", bundle: bundle).instantiateWithOwner(nil, options: nil)[0] as? NoticeView else {
+    guard let view = UINib(nibName: "NoticeView", bundle: bundle).instantiate(withOwner: nil, options: nil)[0] as? NoticeView else {
       print("NoticeWindow error: Could not instantiate the NoticeView nib.")
       return nil
     }
@@ -78,12 +78,12 @@ internal extension NoticeView {
   }
 }
 
-internal extension NSBundle {
-  static var noticeWindowBundle: NSBundle? {
-    let podBundle = NSBundle(forClass: NoticeWindow.classForCoder())
+internal extension Bundle {
+  static var noticeWindowBundle: Bundle? {
+    let podBundle = Bundle(for: NoticeWindow.classForCoder())
 
-    if let bundleURL = podBundle.URLForResource("NoticeWindow", withExtension: "bundle") {
-      return NSBundle(URL: bundleURL)
+    if let bundleURL = podBundle.url(forResource: "NoticeWindow", withExtension: "bundle") {
+      return Bundle(url: bundleURL)
     }
 
     return nil
