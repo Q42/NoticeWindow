@@ -10,13 +10,13 @@ import Foundation
 import UIKit
 
 public enum NoticePosition {
-  case Top
-  case Bottom
+  case top
+  case bottom
 }
 
 public struct Notice {
   public var view: UIView
-  public var duration: NSTimeInterval?
+  public var duration: TimeInterval?
   public var position: NoticePosition
   public var adjustTopInsetForStatusBar: Bool
   public var dismissOnTouch: Bool
@@ -25,12 +25,12 @@ public struct Notice {
 
   public init(
     view: UIView,
-    position: NoticePosition = .Top,
-    duration: NSTimeInterval? = NSTimeInterval(5),
+    position: NoticePosition = .top,
+    duration: TimeInterval? = TimeInterval(5),
     adjustTopInsetForStatusBar: Bool, // = true,
     dismissOnTouch: Bool = true,
-    tapHandler: () -> Void = {},
-    completion: () -> Void = {})
+    tapHandler: @escaping () -> Void = {},
+    completion: @escaping () -> Void = {})
   {
     self.view = view
     self.position = position
@@ -42,42 +42,41 @@ public struct Notice {
   }
 }
 
-public class NoticeWindow : UIWindow {
+open class NoticeWindow : UIWindow {
 
-  private var pending: Notice?
-  private var current: Notice?
+  fileprivate var pending: Notice?
+  fileprivate var current: Notice?
 
   public override init(frame: CGRect) {
     super.init(frame: frame)
 
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: UIApplicationDidChangeStatusBarFrameNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame, object: nil)
   }
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
 
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: UIApplicationDidChangeStatusBarFrameNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame, object: nil)
   }
 
-  @objc private func adjustForStatusBarFrameChanges() {
+  @objc fileprivate func adjustForStatusBarFrameChanges() {
 
     guard
-      let current = self.current
-      where current.adjustTopInsetForStatusBar && current.position == .Top
+      let current = self.current, current.adjustTopInsetForStatusBar && current.position == .top
     else { return }
 
     // For some reason, statusBarFrame hasn't been updated yet atm, but it is in next event loop
-    dispatch_async(dispatch_get_main_queue()) {
+    DispatchQueue.main.async {
       if let noticeView = current.view as? NoticeView {
-        noticeView.adjustTopInset = UIApplication.sharedApplication().statusBarFrame.height
+        noticeView.adjustTopInset = UIApplication.shared.statusBarFrame.height
       }
       else {
-        current.view.layoutMargins.top = UIApplication.sharedApplication().statusBarFrame.height
+        current.view.layoutMargins.top = UIApplication.shared.statusBarFrame.height
       }
     }
   }
 
-  public func present(notice notice: Notice, animated: Bool = true)
+  open func present(notice: Notice, animated: Bool = true)
   {
     if current != nil {
       pending = notice
@@ -95,7 +94,7 @@ public class NoticeWindow : UIWindow {
     }
   }
 
-  private func showImmediately(notice notice: Notice, animated: Bool) {
+  fileprivate func showImmediately(notice: Notice, animated: Bool) {
 
     current = notice
     let view = notice.view
@@ -109,24 +108,24 @@ public class NoticeWindow : UIWindow {
     view.translatesAutoresizingMaskIntoConstraints = false
 
     addConstraints([
-      NSLayoutConstraint(item: view, attribute: .Left, relatedBy: .Equal, toItem: view.superview, attribute: .Left, multiplier: 1, constant: 0),
-      NSLayoutConstraint(item: view, attribute: .Right, relatedBy: .Equal, toItem: view.superview, attribute: .Right, multiplier: 1, constant: 0)
+      NSLayoutConstraint(item: view, attribute: .left, relatedBy: .equal, toItem: view.superview, attribute: .left, multiplier: 1, constant: 0),
+      NSLayoutConstraint(item: view, attribute: .right, relatedBy: .equal, toItem: view.superview, attribute: .right, multiplier: 1, constant: 0)
     ])
 
     switch notice.position {
-    case .Top:
-      addConstraint(NSLayoutConstraint(item: view, attribute: .Top, relatedBy: .Equal, toItem: view.superview, attribute: .Top, multiplier: 1, constant: 0))
+    case .top:
+      addConstraint(NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: view.superview, attribute: .top, multiplier: 1, constant: 0))
 
-    case .Bottom:
-      addConstraint(NSLayoutConstraint(item: view, attribute: .Bottom, relatedBy: .Equal, toItem: view.superview, attribute: .Bottom, multiplier: 1, constant: 0))
+    case .bottom:
+      addConstraint(NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: view.superview, attribute: .bottom, multiplier: 1, constant: 0))
     }
 
     view.layoutIfNeeded()
 
     // If the notice has a finite duration we schedule a dismiss callback
     if let duration = notice.duration {
-      let when = dispatch_time(DISPATCH_TIME_NOW, Int64(duration * Double(NSEC_PER_SEC)))
-      dispatch_after(when, dispatch_get_main_queue()) { [weak self] in
+      let when = DispatchTime.now() + Double(Int64(duration * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+      DispatchQueue.main.asyncAfter(deadline: when) { [weak self] in
         // only dismiss when we it's the same notice
         if self?.current?.view === view {
           self?.dismissCurrentNotice()
@@ -139,19 +138,18 @@ public class NoticeWindow : UIWindow {
 
       let animation = CABasicAnimation(keyPath: "transform.translation.y")
       animation.duration = 0.25
-      animation.fromValue = notice.position == .Top ? -view.frame.size.height : +view.frame.size.height
+      animation.fromValue = notice.position == .top ? -view.frame.size.height : +view.frame.size.height
       animation.toValue = 0
-      animation.removedOnCompletion = false
+      animation.isRemovedOnCompletion = false
       animation.fillMode = kCAFillModeForwards
 
-      view.layer.addAnimation(animation, forKey: "slide in")
+      view.layer.add(animation, forKey: "slide in")
       CATransaction.commit()
     }
   }
 
-  public func dismissCurrentNotice(animated: Bool = true, dismissed: (() -> Void)? = nil) {
-    if let current = self.current
-      where current.view.layer.animationForKey("slide out") == nil
+  open func dismissCurrentNotice(_ animated: Bool = true, dismissed: (() -> Void)? = nil) {
+    if let current = self.current, current.view.layer.animation(forKey: "slide out") == nil
     {
       dismiss(notice: current, animated: animated, dismissed: dismissed)
     }
@@ -160,10 +158,10 @@ public class NoticeWindow : UIWindow {
     }
   }
 
-  public func dismiss(notice notice: Notice, animated: Bool = true, dismissed: (() -> Void)? = nil) {
+  open func dismiss(notice: Notice, animated: Bool = true, dismissed: (() -> Void)? = nil) {
 
     let complete: () -> () = { [weak self] in
-      if let current = self?.current where current.view === notice.view {
+      if let current = self?.current, current.view === notice.view {
         current.view.removeFromSuperview()
         self?.current = nil
         current.completion()
@@ -179,11 +177,11 @@ public class NoticeWindow : UIWindow {
       CATransaction.setCompletionBlock(complete)
       let animation = CABasicAnimation(keyPath: "transform.translation.y")
       animation.duration = 0.25
-      animation.toValue = notice.position == .Top ? -view.frame.size.height : +view.frame.size.height
-      animation.removedOnCompletion = false
+      animation.toValue = notice.position == .top ? -view.frame.size.height : +view.frame.size.height
+      animation.isRemovedOnCompletion = false
       animation.fillMode = kCAFillModeForwards
 
-      view.layer.addAnimation(animation, forKey: "slide out")
+      view.layer.add(animation, forKey: "slide out")
       CATransaction.commit()
     } else {
       complete()
@@ -191,16 +189,16 @@ public class NoticeWindow : UIWindow {
 
   }
 
-  @objc private func noticeTouched() {
+  @objc fileprivate func noticeTouched() {
     current?.tapHandler()
     dismissCurrentNotice()
   }
 
-  public override func layoutSubviews() {
+  open override func layoutSubviews() {
     super.layoutSubviews()
 
     if let current = self.current {
-      bringSubviewToFront(current.view)
+      bringSubview(toFront: current.view)
     }
   }
 }
@@ -208,19 +206,19 @@ public class NoticeWindow : UIWindow {
 extension NoticeWindow {
 
   public func present(
-    view view: UIView,
-    duration: NSTimeInterval? = 5,
-    position: NoticePosition = .Top,
+    view: UIView,
+    duration: TimeInterval? = 5,
+    position: NoticePosition = .top,
     adjustTopInsetForStatusBar: Bool = true,
     animated: Bool = true,
     completion: (() -> Void)? = nil)
   {
 
-    if adjustTopInsetForStatusBar && position == .Top {
-      view.layoutMargins.top = UIApplication.sharedApplication().statusBarFrame.height
+    if adjustTopInsetForStatusBar && position == .top {
+      view.layoutMargins.top = UIApplication.shared.statusBarFrame.height
     }
 
-    let notice = Notice(view: view, duration: duration, position: position, adjustTopInsetForStatusBar: adjustTopInsetForStatusBar, completion: { completion?() })
+    let notice = Notice(view: view, position: position, duration: duration, adjustTopInsetForStatusBar: adjustTopInsetForStatusBar, completion: { completion?() })
     self.present(notice: notice, animated: animated)
   }
 

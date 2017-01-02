@@ -27,10 +27,10 @@ public struct NoticeViewStyle {
 
   public init(
     backgroundColor: UIColor = UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00),
-    textColor: UIColor = .whiteColor(),
+    textColor: UIColor = .white,
     titleNumberOfLines: Int = 0,
     messageNumberOfLines: Int = 0,
-    position: NoticePosition = .Top,
+    position: NoticePosition = .top,
     adjustTopInsetForStatusBar: Bool = true,
     insets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10),
     imageSpacing: CGFloat = 10,
@@ -56,14 +56,14 @@ public struct NoticeViewStyle {
   public static var success: NoticeViewStyle {
     return NoticeViewStyle(
       backgroundColor: UIColor(red: 0.447, green: 0.659, blue: 0.376, alpha: 1.00),
-      textColor: .whiteColor()
+      textColor: .white
     )
   }
 
   public static var error: NoticeViewStyle {
     return NoticeViewStyle(
       backgroundColor: UIColor(red: 0.867, green: 0.125, blue: 0.125, alpha: 1.00),
-      textColor: .whiteColor()
+      textColor: .white
     )
   }
 }
@@ -77,8 +77,8 @@ public struct NoticeImage {
 
   public init(
     image: UIImage?,
-    contentMode: UIViewContentMode = .Right,
-    tintColor: UIColor = .whiteColor(),
+    contentMode: UIViewContentMode = .right,
+    tintColor: UIColor = .white,
     width: CGFloat? = nil)
   {
     self.image = image
@@ -90,21 +90,21 @@ public struct NoticeImage {
   public static var close: NoticeImage {
     let image = UIImage(
       named: "notice-view-close-icon",
-      inBundle: NSBundle.noticeWindowBundle,
-      compatibleWithTraitCollection: nil
+      in: Bundle.noticeWindowBundle,
+      compatibleWith: nil
     )
 
-    return NoticeImage(image: image?.imageWithRenderingMode(.AlwaysTemplate))
+    return NoticeImage(image: image?.withRenderingMode(.alwaysTemplate))
   }
 
   public static var disclosure: NoticeImage {
     let image = UIImage(
       named: "notice-view-disclosure-icon",
-      inBundle: NSBundle.noticeWindowBundle,
-      compatibleWithTraitCollection: nil
+      in: Bundle.noticeWindowBundle,
+      compatibleWith: nil
     )
 
-    return NoticeImage(image: image?.imageWithRenderingMode(.AlwaysTemplate))
+    return NoticeImage(image: image?.withRenderingMode(.alwaysTemplate))
   }
 
 }

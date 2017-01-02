@@ -43,7 +43,7 @@ class NoticeView: UIView {
       layoutMargins.top = style.insets.top + adjustTopInset
 
       if let image = style.leftImage {
-        leftImage.hidden = false
+        leftImage.isHidden = false
 
         leftImageWidth.constant = image.width
 
@@ -52,11 +52,11 @@ class NoticeView: UIView {
         leftImage.contentMode = image.contentMode
       }
       else {
-        leftImage.hidden = true
+        leftImage.isHidden = true
       }
 
       if let image = style.rightImage {
-        rightImage.hidden = false
+        rightImage.isHidden = false
 
         rightImageWidth.constant = image.width
 
@@ -65,7 +65,7 @@ class NoticeView: UIView {
         rightImage.contentMode = image.contentMode
       }
       else {
-        rightImage.hidden = true
+        rightImage.isHidden = true
       }
     }
   }
