@@ -5,11 +5,41 @@
 
 <hr>
 
-## Usage
+## Example
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+First, set the NoticeWindow to be the window of the AppDelegate:
 
-## Requirements
+```swift
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+  var window: UIWindow? = NoticeWindow(frame: UIScreen.main.bounds)
+
+  // Helper property to quickly access the NoticeWindow
+  static var noticeWindow: NoticeWindow? {
+    return (UIApplication.shared.delegate as? AppDelegate)?.window as? NoticeWindow
+  }
+
+}
+```
+
+Second, present a Notice using the static var on AppDelegate:
+
+```swift
+AppDelegate.noticeWindow?.presentNotice(title: "Oops", message: "An error has occurred", style: .error)
+```
+
+The default error style can be customized by changing properties on the NoticeViewStyle struct. For example:
+
+```swift
+var style = NoticeViewStyle.error
+style.backgroundColor = UIColor(red: 0.839, green: 0.345, blue: 0.227, alpha: 1.00)
+style.rightImage = .close
+
+AppDelegate.noticeWindow?.presentNotice(title: "Oops", message: "An error has occurred", style: style)
+```
+
+For more detailed examples, including how to use a custom view, see the Example project in this repository.
 
 ## Installation
 
