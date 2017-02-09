@@ -5,6 +5,8 @@
 
 <hr>
 
+Present your custom notices in the application window so the notice isn't lost after leaving the screen.
+
 ## Example
 
 First, set the NoticeWindow to be the window of the AppDelegate:
