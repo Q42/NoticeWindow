@@ -12,18 +12,11 @@ import NoticeWindow
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-  lazy var noticeWindow: NoticeWindow = {
-    return NoticeWindow(frame: UIScreen.main.bounds)
-  }()
-
-  var window: UIWindow? {
-    get {
-      return noticeWindow
-    }
-    set {
-      self.window = newValue
-    }
+  static var noticeWindow: NoticeWindow? {
+    return (UIApplication.shared.delegate as? AppDelegate)?.window as? NoticeWindow
   }
+
+  var window: UIWindow? = NoticeWindow(frame: UIScreen.main.bounds)
 
 }
 

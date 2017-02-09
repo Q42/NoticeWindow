@@ -14,11 +14,11 @@ class ViewController: UIViewController {
   @IBAction func presentDefaultSuccessNotice(_ sender: AnyObject) {
     var style = NoticeViewStyle.success
     style.adjustTopInsetForStatusBar = false
-    (UIApplication.shared.delegate as? AppDelegate)?.noticeWindow.presentNotice(title: "This is great", message: "Something went very well", style: style)
+    AppDelegate.noticeWindow?.presentNotice(title: "This is great", message: "Something went very well", style: style)
   }
   
   @IBAction func presentDefaultErrorNotice(_ sender: AnyObject) {
-    (UIApplication.shared.delegate as? AppDelegate)?.noticeWindow.presentNotice(title: "Oops", message: "An error has occurred", style: .error)
+    AppDelegate.noticeWindow?.presentNotice(title: "Oops", message: "An error has occurred", style: .error)
   }
 
   @IBAction func presentCustomSuccessNotice(_ sender: AnyObject) {

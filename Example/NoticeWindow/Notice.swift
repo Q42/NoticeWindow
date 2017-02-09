@@ -27,10 +27,10 @@ extension Notice {
       .instantiate(withOwner: nil, options: nil)[0] as! CustomNoticeView
     view.notice = self
 
-    (UIApplication.shared.delegate as? AppDelegate)?.noticeWindow.present(view: view)
+    AppDelegate.noticeWindow?.present(view: view)
   }
 
   func dismiss() {
-    (UIApplication.shared.delegate as? AppDelegate)?.noticeWindow.dismissCurrentNotice()
+    AppDelegate.noticeWindow?.dismissCurrentNotice()
   }
 }
