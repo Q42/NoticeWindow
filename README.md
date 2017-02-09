@@ -53,6 +53,7 @@ pod "NoticeWindow"
 Releases
 --------
 
+ - 0.5.2 - 2017-02-09 - Fix AutoLayout warnings
  - **0.5.1** - 2017-01-19 - CocoaPods release
  - 0.5.0 - 2017-01-02 - Swift 3 support
  - 0.4.0 - 2016-11-06 - Support more styling
