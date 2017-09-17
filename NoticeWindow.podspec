@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "NoticeWindow"
-  s.version          = "0.5.2"
+  s.version          = "0.6.0"
   s.summary          = "Present your custom notices in the application window."
 
   s.description      = <<-DESC
