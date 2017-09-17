@@ -68,10 +68,10 @@ open class NoticeWindow : UIWindow {
     // For some reason, statusBarFrame hasn't been updated yet atm, but it is in next event loop
     DispatchQueue.main.async {
       if let noticeView = current.view as? NoticeView {
-        noticeView.adjustTopInset = UIApplication.shared.statusBarFrame.height
+        noticeView.adjustTopInset = UIApplication.shared.additionalTopMargin(for: current.view)
       }
       else {
-        current.view.layoutMargins.top = UIApplication.shared.statusBarFrame.height
+        current.view.layoutMargins.top = UIApplication.shared.additionalTopMargin(for: current.view)
       }
     }
   }
@@ -215,11 +215,24 @@ extension NoticeWindow {
   {
 
     if adjustTopInsetForStatusBar && position == .top {
-      view.layoutMargins.top = UIApplication.shared.statusBarFrame.height
+      view.layoutMargins.top = UIApplication.shared.additionalTopMargin(for: view)
     }
 
     let notice = Notice(view: view, position: position, duration: duration, adjustTopInsetForStatusBar: adjustTopInsetForStatusBar, completion: { completion?() })
     self.present(notice: notice, animated: animated)
+  }
+
+}
+
+extension UIApplication {
+
+  // This should propabily not be done this way, but instead use additionalSafeAreaInsets
+  func additionalTopMargin(for view: UIView) -> CGFloat {
+    if #available(iOS 11.0, *) {
+      return max(view.safeAreaInsets.top, UIApplication.shared.statusBarFrame.height)
+    } else {
+      return UIApplication.shared.statusBarFrame.height
+    }
   }
 
 }

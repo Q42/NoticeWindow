@@ -28,7 +28,7 @@ extension NoticeWindow {
     view.style = style
 
     if adjustTopInsetForStatusBar && style.position == .top {
-      view.adjustTopInset = UIApplication.shared.statusBarFrame.height
+      view.adjustTopInset = UIApplication.shared.additionalTopMargin(for: view)
     }
 
     let notice = Notice(view: view, position: style.position, duration: duration, adjustTopInsetForStatusBar: adjustTopInsetForStatusBar, dismissOnTouch: true, tapHandler: { tapHandler?() }, completion: { completion?() })
@@ -53,7 +53,7 @@ extension NoticeWindow {
     view.style = style
 
     if adjustTopInsetForStatusBar && style.position == .top {
-      view.adjustTopInset = UIApplication.shared.statusBarFrame.height
+      view.adjustTopInset = UIApplication.shared.additionalTopMargin(for: view)
     }
 
     let notice = Notice(view: view, position: style.position, duration: duration, adjustTopInsetForStatusBar: adjustTopInsetForStatusBar, dismissOnTouch: true, tapHandler: { tapHandler?() }, completion: { completion?() })
