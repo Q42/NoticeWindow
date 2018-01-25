@@ -17,7 +17,6 @@ public struct NoticeViewStyle {
   public var messageNumberOfLines: Int
 
   public var position: NoticePosition
-  public var adjustTopInsetForStatusBar: Bool
 
   public var insets: UIEdgeInsets
   public var imageSpacing: CGFloat
@@ -31,7 +30,6 @@ public struct NoticeViewStyle {
     titleNumberOfLines: Int = 0,
     messageNumberOfLines: Int = 0,
     position: NoticePosition = .top,
-    adjustTopInsetForStatusBar: Bool = true,
     insets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10),
     imageSpacing: CGFloat = 10,
     leftImage: NoticeImage? = nil,
@@ -44,7 +42,6 @@ public struct NoticeViewStyle {
     self.messageNumberOfLines = messageNumberOfLines
 
     self.position = position
-    self.adjustTopInsetForStatusBar = adjustTopInsetForStatusBar
 
     self.insets = insets
     self.imageSpacing = imageSpacing

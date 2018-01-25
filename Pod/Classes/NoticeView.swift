@@ -22,12 +22,6 @@ class NoticeView: UIView {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var messageLabel: UILabel!
 
-  var adjustTopInset: CGFloat = 0 {
-    didSet {
-      layoutMargins.top = style.insets.top + adjustTopInset
-    }
-  }
-
   var style: NoticeViewStyle = NoticeViewStyle() {
     didSet {
       backgroundColor = style.backgroundColor
@@ -40,7 +34,6 @@ class NoticeView: UIView {
       horizontalStackView.spacing = style.imageSpacing
 
       layoutMargins = style.insets
-      layoutMargins.top = style.insets.top + adjustTopInset
 
       if let image = style.leftImage {
         leftImage.isHidden = false
@@ -68,5 +61,41 @@ class NoticeView: UIView {
         rightImage.isHidden = true
       }
     }
+  }
+
+  public override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    NotificationCenter.default
+      .addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: .UIApplicationDidChangeStatusBarFrame, object: nil)
+  }
+
+  public required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+
+    NotificationCenter.default
+      .addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: .UIApplicationDidChangeStatusBarFrame, object: nil)
+  }
+
+  @objc fileprivate func adjustForStatusBarFrameChanges() {
+    guard style.position == .top else { return }
+
+    // For some reason, statusBarFrame hasn't been updated yet when rotating, but it is in next event loop
+    DispatchQueue.main.async {
+      self.updateLayoutMarginsWithStatusBarHeight()
+    }
+  }
+
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    updateLayoutMarginsWithStatusBarHeight()
+  }
+
+  private func updateLayoutMarginsWithStatusBarHeight() {
+    guard style.position == .top else { return }
+
+    let additionalHeight = (window as? NoticeWindow)?.additionalStatusBarHeight() ?? 0
+    layoutMargins.top = style.insets.top + additionalHeight
   }
 }

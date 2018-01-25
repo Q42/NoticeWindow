@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2B987D231C17162A0046B324 /* Notice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B987D221C17162A0046B324 /* Notice.swift */; };
+		2B987D231C17162A0046B324 /* CustomNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B987D221C17162A0046B324 /* CustomNotice.swift */; };
 		2B987D251C17185E0046B324 /* CustomNoticeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B987D241C17185E0046B324 /* CustomNoticeView.xib */; };
 		2B987D271C17187A0046B324 /* CustomNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B987D261C17187A0046B324 /* CustomNoticeView.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
@@ -23,7 +23,7 @@
 		0B2BE6F069A5512E68B3F1C2 /* Pods_NoticeWindow_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NoticeWindow_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C8974505895D59A9059652A /* NoticeWindow.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = NoticeWindow.podspec; path = ../NoticeWindow.podspec; sourceTree = "<group>"; };
 		206A149F3D9743AA453638E6 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		2B987D221C17162A0046B324 /* Notice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notice.swift; sourceTree = "<group>"; };
+		2B987D221C17162A0046B324 /* CustomNotice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNotice.swift; sourceTree = "<group>"; };
 		2B987D241C17185E0046B324 /* CustomNoticeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomNoticeView.xib; sourceTree = "<group>"; };
 		2B987D261C17187A0046B324 /* CustomNoticeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNoticeView.swift; sourceTree = "<group>"; };
 		3DEF5199A8C27CBA9CCABE9A /* Pods-NoticeWindowPods-NoticeWindow_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NoticeWindowPods-NoticeWindow_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NoticeWindowPods-NoticeWindow_Example/Pods-NoticeWindowPods-NoticeWindow_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -58,7 +58,7 @@
 		2B987D331C1741F00046B324 /* Notice */ = {
 			isa = PBXGroup;
 			children = (
-				2B987D221C17162A0046B324 /* Notice.swift */,
+				2B987D221C17162A0046B324 /* CustomNotice.swift */,
 				2B987D261C17187A0046B324 /* CustomNoticeView.swift */,
 				2B987D241C17185E0046B324 /* CustomNoticeView.xib */,
 			);
@@ -265,7 +265,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B987D271C17187A0046B324 /* CustomNoticeView.swift in Sources */,
-				2B987D231C17162A0046B324 /* Notice.swift in Sources */,
+				2B987D231C17162A0046B324 /* CustomNotice.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);

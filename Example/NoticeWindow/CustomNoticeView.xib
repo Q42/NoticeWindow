@@ -1,23 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="aDj-2r-koV" customClass="CustomNoticeView" customModule="NoticeWindow_Example" customModuleProvider="target">
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="aDj-2r-koV" customClass="CustomNoticeView" customModule="NoticeWindow_Example" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="361" height="61"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ntA-7D-hOk" userLabel="Green">
+                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                    <color key="backgroundColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="8LC-9O-yYS"/>
+                        <constraint firstAttribute="width" constant="24" id="X5F-qc-Svk"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IrL-Af-GwA" userLabel="Green">
+                    <rect key="frame" x="337" y="37" width="24" height="24"/>
+                    <color key="backgroundColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="cBo-j8-mR4"/>
+                        <constraint firstAttribute="width" constant="24" id="pgD-i3-gYz"/>
+                    </constraints>
+                </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wnv-Se-XZk" userLabel="Title">
-                    <rect key="frame" x="16" y="8" width="329" height="53"/>
+                    <rect key="frame" x="16" y="0.0" width="329" height="61"/>
+                    <color key="backgroundColor" red="1" green="1" blue="0.64133029513888884" alpha="0.5" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -25,10 +42,14 @@
             </subviews>
             <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="wnv-Se-XZk" firstAttribute="top" secondItem="aDj-2r-koV" secondAttribute="topMargin" constant="8" id="5L1-7o-aGc"/>
+                <constraint firstItem="wnv-Se-XZk" firstAttribute="top" secondItem="aDj-2r-koV" secondAttribute="topMargin" id="5L1-7o-aGc"/>
+                <constraint firstItem="ntA-7D-hOk" firstAttribute="top" secondItem="aDj-2r-koV" secondAttribute="top" id="JFV-KV-c94"/>
                 <constraint firstAttribute="bottomMargin" secondItem="wnv-Se-XZk" secondAttribute="bottom" id="Q6S-lG-kYs"/>
                 <constraint firstAttribute="trailingMargin" secondItem="wnv-Se-XZk" secondAttribute="trailing" id="YRG-Mb-BS9"/>
+                <constraint firstAttribute="bottom" secondItem="IrL-Af-GwA" secondAttribute="bottom" id="lBV-MQ-RBN"/>
+                <constraint firstAttribute="trailing" secondItem="IrL-Af-GwA" secondAttribute="trailing" id="oXB-hM-aO9"/>
                 <constraint firstItem="wnv-Se-XZk" firstAttribute="leading" secondItem="aDj-2r-koV" secondAttribute="leadingMargin" id="oXD-bx-8nb"/>
+                <constraint firstItem="ntA-7D-hOk" firstAttribute="leading" secondItem="aDj-2r-koV" secondAttribute="leading" id="y2x-4X-7Bc"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

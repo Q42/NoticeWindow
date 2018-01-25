@@ -9,23 +9,24 @@
 import Foundation
 import UIKit
 
-struct Notice {
+struct CustomNotice {
   let title: String
   let style: Style
 
   enum Style {
-    case Success
-    case Error
+    case success
+    case error
   }
 }
 
-extension Notice {
+extension CustomNotice {
 
   func present() {
 
     let view = UINib.init(nibName: "CustomNoticeView", bundle: Bundle.main)
       .instantiate(withOwner: nil, options: nil)[0] as! CustomNoticeView
-    view.notice = self
+    view.customNotice = self
+
 
     AppDelegate.noticeWindow?.present(view: view)
   }

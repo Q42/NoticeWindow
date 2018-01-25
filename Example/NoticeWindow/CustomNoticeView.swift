@@ -12,7 +12,7 @@ import UIKit
 class CustomNoticeView: UIView {
   @IBOutlet weak var titleLabel: UILabel!
 
-  var notice: Notice? {
+  var customNotice: CustomNotice? {
     didSet {
       noticeDidChange()
     }
@@ -21,15 +21,15 @@ class CustomNoticeView: UIView {
   // MARK: View Lifecycle
 
   private func noticeDidChange() {
-    guard let notice = self.notice else { return }
+    guard let custonNotice = self.customNotice else { return }
 
-    switch notice.style {
-    case .Success:
+    switch custonNotice.style {
+    case .success:
       backgroundColor = UIColor(red: 0.384, green: 0.483, blue: 1.000, alpha: 1.00)
-    case .Error:
+    case .error:
       backgroundColor = UIColor(red: 1.0, green: 0.641, blue: 0.218, alpha: 1.00)
     }
 
-    titleLabel.text = notice.title
+    titleLabel.text = custonNotice.title
   }
 }

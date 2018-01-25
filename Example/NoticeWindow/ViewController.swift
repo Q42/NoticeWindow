@@ -12,9 +12,7 @@ import NoticeWindow
 class ViewController: UIViewController {
 
   @IBAction func presentDefaultSuccessNotice(_ sender: AnyObject) {
-    var style = NoticeViewStyle.success
-    style.adjustTopInsetForStatusBar = false
-    AppDelegate.noticeWindow?.presentNotice(title: "This is great", message: "Something went very well", style: style)
+    AppDelegate.noticeWindow?.presentNotice(title: "This is great", message: "Something went very well", style: .success)
   }
   
   @IBAction func presentDefaultErrorNotice(_ sender: AnyObject) {
@@ -22,11 +20,11 @@ class ViewController: UIViewController {
   }
 
   @IBAction func presentCustomSuccessNotice(_ sender: AnyObject) {
-    Notice(title: "My Custom success notice", style: .Success).present()
+    CustomNotice(title: "My Custom success notice", style: .success).present()
   }
 
   @IBAction func presentCustomErrorNotice(_ sender: AnyObject) {
-    Notice(title: "My custom error notice", style: .Error).present()
+    CustomNotice(title: "My custom error notice", style: .error).present()
   }
 
 }

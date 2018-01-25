@@ -9,72 +9,10 @@
 import Foundation
 import UIKit
 
-public enum NoticePosition {
-  case top
-  case bottom
-}
-
-public struct Notice {
-  public var view: UIView
-  public var duration: TimeInterval?
-  public var position: NoticePosition
-  public var adjustTopInsetForStatusBar: Bool
-  public var dismissOnTouch: Bool
-  public var tapHandler: () -> Void
-  public var completion: () -> Void
-
-  public init(
-    view: UIView,
-    position: NoticePosition = .top,
-    duration: TimeInterval? = TimeInterval(5),
-    adjustTopInsetForStatusBar: Bool, // = true,
-    dismissOnTouch: Bool = true,
-    tapHandler: @escaping () -> Void = {},
-    completion: @escaping () -> Void = {})
-  {
-    self.view = view
-    self.position = position
-    self.duration = duration
-    self.dismissOnTouch = dismissOnTouch
-    self.adjustTopInsetForStatusBar = adjustTopInsetForStatusBar
-    self.tapHandler = tapHandler
-    self.completion = completion
-  }
-}
-
 open class NoticeWindow : UIWindow {
 
   fileprivate var pending: Notice?
   fileprivate var current: Notice?
-
-  public override init(frame: CGRect) {
-    super.init(frame: frame)
-
-    NotificationCenter.default.addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame, object: nil)
-  }
-
-  public required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-
-    NotificationCenter.default.addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame, object: nil)
-  }
-
-  @objc fileprivate func adjustForStatusBarFrameChanges() {
-
-    guard
-      let current = self.current, current.adjustTopInsetForStatusBar && current.position == .top
-    else { return }
-
-    // For some reason, statusBarFrame hasn't been updated yet atm, but it is in next event loop
-    DispatchQueue.main.async {
-      if let noticeView = current.view as? NoticeView {
-        noticeView.adjustTopInset = UIApplication.shared.additionalTopMargin(for: current.view)
-      }
-      else {
-        current.view.layoutMargins.top = UIApplication.shared.additionalTopMargin(for: current.view)
-      }
-    }
-  }
 
   open func present(notice: Notice, animated: Bool = true)
   {
@@ -201,6 +139,15 @@ open class NoticeWindow : UIWindow {
       bringSubview(toFront: current.view)
     }
   }
+
+  // This should propabily not be done this way, but instead use additionalSafeAreaInsets
+  func additionalStatusBarHeight() -> CGFloat {
+    if #available(iOS 11.0, *) {
+      return safeAreaInsets.top == 0 ? UIApplication.shared.statusBarFrame.height : 0
+    } else {
+      return UIApplication.shared.statusBarFrame.height
+    }
+  }
 }
 
 extension NoticeWindow {
@@ -209,30 +156,21 @@ extension NoticeWindow {
     view: UIView,
     duration: TimeInterval? = 5,
     position: NoticePosition = .top,
-    adjustTopInsetForStatusBar: Bool = true,
+    adjustTopLayoutMarginForStatusBar: Bool = true,
     animated: Bool = true,
     completion: (() -> Void)? = nil)
   {
-
-    if adjustTopInsetForStatusBar && position == .top {
-      view.layoutMargins.top = UIApplication.shared.additionalTopMargin(for: view)
+    if adjustTopLayoutMarginForStatusBar && position == .top {
+      view.layoutMargins.top += self.additionalStatusBarHeight()
     }
 
-    let notice = Notice(view: view, position: position, duration: duration, adjustTopInsetForStatusBar: adjustTopInsetForStatusBar, completion: { completion?() })
+    let notice = Notice(
+      view: view,
+      position: position,
+      duration: duration,
+      completion: { completion?() }
+    )
     self.present(notice: notice, animated: animated)
-  }
-
-}
-
-extension UIApplication {
-
-  // This should propabily not be done this way, but instead use additionalSafeAreaInsets
-  func additionalTopMargin(for view: UIView) -> CGFloat {
-    if #available(iOS 11.0, *) {
-      return max(view.safeAreaInsets.top, UIApplication.shared.statusBarFrame.height)
-    } else {
-      return UIApplication.shared.statusBarFrame.height
-    }
   }
 
 }

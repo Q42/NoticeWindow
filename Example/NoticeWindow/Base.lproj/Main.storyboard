@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="dif-h9-4CM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="dif-h9-4CM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,6 +22,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gxL-6N-68N" userLabel="Margin indicator">
+                                <rect key="frame" x="16" y="64" width="343" height="603"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.64133029509999995" alpha="0.5" colorSpace="calibratedRGB"/>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y9c-75-CeS">
                                 <rect key="frame" x="109.5" y="84" width="156" height="30"/>
                                 <state key="normal" title="Default success notice"/>
@@ -54,10 +60,14 @@
                             <constraint firstItem="y9c-75-CeS" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="0c1-P1-aOh"/>
                             <constraint firstItem="7k3-KP-pU5" firstAttribute="top" secondItem="y9c-75-CeS" secondAttribute="bottom" constant="40" id="3uo-ho-nHh"/>
                             <constraint firstItem="6q1-PF-Km7" firstAttribute="top" secondItem="7k3-KP-pU5" secondAttribute="bottom" constant="40" id="BYM-Jg-gKg"/>
+                            <constraint firstItem="gxL-6N-68N" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" id="DY6-kq-kKl"/>
                             <constraint firstItem="0zY-FR-AT4" firstAttribute="centerX" secondItem="6q1-PF-Km7" secondAttribute="centerX" id="Dja-2l-DXn"/>
                             <constraint firstItem="y9c-75-CeS" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="20" id="DnG-SS-pi4"/>
                             <constraint firstItem="7k3-KP-pU5" firstAttribute="centerX" secondItem="y9c-75-CeS" secondAttribute="centerX" id="Fv3-hS-df1"/>
                             <constraint firstItem="0zY-FR-AT4" firstAttribute="top" secondItem="6q1-PF-Km7" secondAttribute="bottom" constant="40" id="L8f-62-dbq"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="gxL-6N-68N" secondAttribute="bottom" id="Phe-u6-q7o"/>
+                            <constraint firstItem="gxL-6N-68N" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="VMR-p6-9rh"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="gxL-6N-68N" secondAttribute="trailing" id="YgP-v9-laL"/>
                             <constraint firstItem="6q1-PF-Km7" firstAttribute="centerX" secondItem="7k3-KP-pU5" secondAttribute="centerX" id="f7a-mg-FNg"/>
                         </constraints>
                     </view>
@@ -73,7 +83,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dif-h9-4CM" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2DO-aS-1bH">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
