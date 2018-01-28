@@ -16,7 +16,10 @@ open class NoticeWindow : UIWindow {
 
   open func present(notice: Notice, animated: Bool = true)
   {
-    if current != nil {
+    if current == nil {
+      showImmediately(notice: notice, animated: animated)
+    }
+    else {
       pending = notice
 
       dismissCurrentNotice(animated) { [weak self] in
@@ -26,9 +29,6 @@ open class NoticeWindow : UIWindow {
         }
       }
 
-    }
-    else {
-      showImmediately(notice: notice, animated: animated)
     }
   }
 
@@ -62,8 +62,7 @@ open class NoticeWindow : UIWindow {
 
     // If the notice has a finite duration we schedule a dismiss callback
     if let duration = notice.duration {
-      let when = DispatchTime.now() + Double(Int64(duration * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-      DispatchQueue.main.asyncAfter(deadline: when) { [weak self] in
+      DispatchQueue.main.asyncAfter(deadline: .now() + duration) { [weak self] in
         // only dismiss when we it's the same notice
         if self?.current?.view === view {
           self?.dismissCurrentNotice()
@@ -78,8 +77,6 @@ open class NoticeWindow : UIWindow {
       animation.duration = 0.25
       animation.fromValue = notice.position == .top ? -view.frame.size.height : +view.frame.size.height
       animation.toValue = 0
-      animation.isRemovedOnCompletion = false
-      animation.fillMode = kCAFillModeForwards
 
       view.layer.add(animation, forKey: "slide in")
       CATransaction.commit()
@@ -99,8 +96,9 @@ open class NoticeWindow : UIWindow {
   open func dismiss(notice: Notice, animated: Bool = true, dismissed: (() -> Void)? = nil) {
 
     let complete: () -> () = { [weak self] in
+      notice.view.removeFromSuperview()
+
       if let current = self?.current, current.view === notice.view {
-        current.view.removeFromSuperview()
         self?.current = nil
         current.completion()
       }
@@ -115,9 +113,8 @@ open class NoticeWindow : UIWindow {
       CATransaction.setCompletionBlock(complete)
       let animation = CABasicAnimation(keyPath: "transform.translation.y")
       animation.duration = 0.25
+      animation.fromValue = 0
       animation.toValue = notice.position == .top ? -view.frame.size.height : +view.frame.size.height
-      animation.isRemovedOnCompletion = false
-      animation.fillMode = kCAFillModeForwards
 
       view.layer.add(animation, forKey: "slide out")
       CATransaction.commit()
