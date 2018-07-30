@@ -68,13 +68,13 @@ public struct NoticeViewStyle {
 
 public struct NoticeImage {
   public var image: UIImage?
-  public var contentMode: UIViewContentMode
+  public var contentMode: UIView.ContentMode
   public var tintColor: UIColor
   public var width: CGFloat
 
   public init(
     image: UIImage?,
-    contentMode: UIViewContentMode = .right,
+    contentMode: UIView.ContentMode = .right,
     tintColor: UIColor = .white,
     width: CGFloat? = nil)
   {

@@ -67,14 +67,14 @@ class NoticeView: UIView {
     super.init(frame: frame)
 
     NotificationCenter.default
-      .addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: .UIApplicationDidChangeStatusBarFrame, object: nil)
+      .addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: UIApplication.didChangeStatusBarFrameNotification, object: nil)
   }
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
 
     NotificationCenter.default
-      .addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: .UIApplicationDidChangeStatusBarFrame, object: nil)
+      .addObserver(self, selector: #selector(adjustForStatusBarFrameChanges), name: UIApplication.didChangeStatusBarFrameNotification, object: nil)
   }
 
   @objc fileprivate func adjustForStatusBarFrameChanges() {

@@ -133,7 +133,7 @@ open class NoticeWindow : UIWindow {
     super.layoutSubviews()
 
     if let current = self.current {
-      bringSubview(toFront: current.view)
+      bringSubviewToFront(current.view)
     }
   }
 
