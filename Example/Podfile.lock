@@ -1,5 +1,5 @@
 PODS:
-  - NoticeWindow (0.6.1)
+  - NoticeWindow (0.7.0)
 
 DEPENDENCIES:
   - NoticeWindow (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  NoticeWindow: 4922854384a5c2761d4dd93fba4c00789efb5c9c
+  NoticeWindow: f936389257c7f94ec19bf60cfcbe35387c010116
 
 PODFILE CHECKSUM: 8c5f1aeb735df0de77d0b729364db70e7c755fbd
 
