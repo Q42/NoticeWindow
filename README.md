@@ -55,6 +55,7 @@ pod "NoticeWindow"
 Releases
 --------
 
+ - 0.7.0 - 2018-10-02 - Swift 4.2 support
  - 0.6.1 - 2018-01-28 - Improved iPhone X support
  - 0.6.0 - 2017-09-17 - Experimental iPhone X support
  - 0.5.2 - 2017-02-09 - Fix AutoLayout warnings
