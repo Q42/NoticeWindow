@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "NoticeWindow"
-  s.version          = "0.7.0"
+  s.version          = "0.8.0"
   s.summary          = "Present your custom notices in the application window."
 
   s.description      = <<-DESC
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/Q42/NoticeWindow.git", :tag => s.version }
 
   s.platform      = :ios, '9.0'
-  s.swift_version = '4.2'
+  s.swift_version = '5.1'
   s.requires_arc  = true
 
   s.source_files = 'Pod/Classes/*'
