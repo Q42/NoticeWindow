@@ -45,6 +45,8 @@ For more detailed examples, including how to use a custom view, see the Example 
 
 ## Installation
 
+### CocoaPods
+
 NoticeWindow is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
@@ -52,9 +54,19 @@ it, simply add the following line to your Podfile:
 pod "NoticeWindow"
 ```
 
+### Swift Package Manager
+
+NoticeWindow can also be installed using the Swift Package Manager.
+To install it, add a package to your project with the following URL:
+
+```
+https://github.com/Q42/NoticeWindow.git
+```
+
 Releases
 --------
 
+ - 0.9.0 - 2022-10-10 - Add Swift Package Manager support
  - 0.8.0 - 2019-06-10 - Swift 5.1 update
  - 0.7.0 - 2018-10-02 - Swift 4.2 support
  - 0.6.1 - 2018-01-28 - Improved iPhone X support
