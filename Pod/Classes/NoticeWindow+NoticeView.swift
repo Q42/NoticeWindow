@@ -83,6 +83,9 @@ internal extension NoticeView {
 
 internal extension Bundle {
   static var noticeWindowBundle: Bundle? {
+    #if SWIFT_PACKAGE
+    return Bundle.module
+    #else
     let podBundle = Bundle(for: NoticeWindow.classForCoder())
 
     if let bundleURL = podBundle.url(forResource: "NoticeWindow", withExtension: "bundle") {
@@ -90,5 +93,6 @@ internal extension Bundle {
     }
 
     return nil
+    #endif
   }
 }
